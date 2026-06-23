@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- REDES splash screen icon — 288dp viewport, icon fills the 192dp safe zone -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="288dp"
+    android:height="288dp"
+    android:viewportWidth="288"
+    android:viewportHeight="288">
+
+    <!-- Center dot -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M131,172 A13,13 0 1,0 157,172 A13,13 0 1,0 131,172 Z" />
+
+    <!-- Inner arc (r=26) -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="13"
+        android:strokeLineCap="round"
+        android:pathData="M125.62,153.62 A26,26 0 0,1 162.38,153.62" />
+
+    <!-- Middle arc (r=46) -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="13"
+        android:strokeLineCap="round"
+        android:pathData="M111.47,139.47 A46,46 0 0,1 176.53,139.47" />
+
+    <!-- Outer arc (r=66) -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="13"
+        android:strokeLineCap="round"
+        android:pathData="M97.33,125.33 A66,66 0 0,1 190.67,125.33" />
+
+</vector>

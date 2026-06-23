@@ -1,0 +1,862 @@
+﻿{
+    "project":  "REDES-MOBILE",
+    "scan_date":  "2026-06-22",
+    "phase":  "3-incremental-maintenance",
+    "coverage":  "partial-changed-units",
+    "root":  "C:\\Proyectos\\REDES-MOBILE",
+    "excluded_from_deep_read":  [
+                                    ".git",
+                                    ".gradle",
+                                    ".idea",
+                                    ".kotlin",
+                                    "build",
+                                    "binary assets",
+                                    "local.properties values",
+                                    "keystore files"
+                                ],
+    "units":  [
+                  {
+                      "title":  "Navegacion",
+                      "type":  "navigation",
+                      "source_path":  "app/src/main/java/com/redes/app/ui/navigation",
+                      "documentation_path":  "docs/contexto/android/navigation.md",
+                      "status":  "review",
+                      "priority":  "high",
+                      "last_documented":  "2026-06-14",
+                      "notes":  "Revision incremental: AppDestination, AppNavHost, AppContainer y AndroidManifest documentados. Requiere validar roles backend sin shell mobile y profundizar shells supervisor/coordinador."
+                  },
+                  {
+                      "title":  "API mobile REDES + Network/API REDES-MOBILE",
+                      "type":  "network-api-contract",
+                      "source_path":  "app/src/main/java/com/redes/app/network",
+                      "documentation_path":  "docs/contexto/android/network.md",
+                      "status":  "review",
+                      "priority":  "high",
+                      "last_documented":  "2026-06-13",
+                      "paired_project":  "REDES",
+                      "paired_source_path":  "C:\\Proyectos\\REDES\\apps\\web\\src\\app\\api\\mobile",
+                      "notes":  "Network layer, DTOs y consumidores directos documentados. Requiere validar inconsistencias puntuales."
+                  },
+                  {
+                      "title":  "Repositorios por rol y transversales",
+                      "type":  "repository-group",
+                      "source_path":  "app/src/main/java/com/redes/app/data + app/src/main/java/com/redes/app/di/AppContainer.kt",
+                      "documentation_path":  "docs/contexto/android/repositories.md",
+                      "status":  "review",
+                      "priority":  "high",
+                      "last_documented":  "2026-06-20",
+                      "notes":  "Deep dive 2026-06-20: AppContainer, auth, session, presence, tracking, alertas y repositorios tecnico/supervisor/coordinador. Revisar validacion uniforme, errores observables, inicio jornada supervisor, multipart y CuadrillaMapa comun."
+                  },
+                  {
+                      "title":  "Sesion/bootstrap/auth",
+                      "type":  "flow",
+                      "source_path":  "app/src/main/java/com/redes/app/data/session",
+                      "documentation_path":  "docs/contexto/android/session-auth-bootstrap.md",
+                      "status":  "review",
+                      "priority":  "high",
+                      "last_documented":  "2026-06-14",
+                      "paired_project":  "REDES",
+                      "paired_source_path":  "C:\\Proyectos\\REDES\\apps\\web\\src\\core\\auth",
+                      "notes":  "Login Firebase, ID token, bootstrap, cache, selected role, comunicados y force update documentados. Requiere validar roles web sin shell mobile, cache stale y force update."
+                  },
+                  {
+                      "title":  "Tracking y presencia",
+                      "type":  "flow",
+                      "source_path":  "app/src/main/java/com/redes/app/data/tracking",
+                      "documentation_path":  "docs/contexto/android/tracking.md",
+                      "status":  "review",
+                      "priority":  "high",
+                      "last_documented":  "2026-06-14",
+                      "paired_project":  "REDES",
+                      "paired_source_path":  "C:\\Proyectos\\REDES\\apps\\web\\src\\app\\api\\mobile",
+                      "notes":  "Deep dive completado para tracking foreground, presencia lifecycle, permisos y contratos backend. Requiere validar permisos en dispositivo, header de rol y diferencia de cierre tecnico/supervisor."
+                  },
+                  {
+                      "title":  "Pantallas y ViewModels",
+                      "type":  "screen-group",
+                      "source_path":  "app/src/main/java/com/redes/app/ui",
+                      "documentation_path":  "docs/contexto/android/screens.md",
+                      "status":  "pending",
+                      "priority":  "medium",
+                      "last_documented":  "2026-06-16",
+                      "notes":  "Mapa incremental creado para pantallas detectadas; falta deep dive visual/funcional por pantalla."
+                  },
+                  {
+                      "title":  "ViewModels por rol y force update",
+                      "type":  "viewmodel-group",
+                      "source_path":  "app/src/main/java/com/redes/app/ui",
+                      "documentation_path":  "docs/contexto/android/viewmodels.md",
+                      "status":  "update",
+                      "priority":  "medium",
+                      "last_documented":  "2026-06-16",
+                      "notes":  "Mapa incremental creado para Auth, Home, Tecnico, Supervisor, Coordinador y ForceUpdate; requiere deep dive focalizado."
+                  },
+                  {
+                      "title":  "Supervisor shell/ViewModel y alertas",
+                      "type":  "role-shell-viewmodel-alerts",
+                      "source_path":  "app/src/main/java/com/redes/app/ui/supervisor",
+                      "documentation_path":  "docs/contexto/android/supervisor-shell-alertas.md",
+                      "status":  "review",
+                      "priority":  "high",
+                      "last_documented":  "2026-06-16",
+                      "related_source_paths":  [
+                                                   "app/src/main/java/com/redes/app/ui/screens/SupervisorShellScreen.kt",
+                                                   "app/src/main/java/com/redes/app/ui/screens/SupervisorOrderDetailScreen.kt",
+                                                   "app/src/main/java/com/redes/app/data/supervisor",
+                                                   "app/src/main/java/com/redes/app/data/alertas",
+                                                   "app/src/main/java/com/redes/app/network/dto/SupervisorDtos.kt",
+                                                   "app/src/main/java/com/redes/app/network/RedesApiClient.kt",
+                                                   "app/src/main/java/com/redes/app/ui/navigation/AppNavHost.kt"
+                                               ],
+                      "notes":  "Deep dive de shell supervisor, jornada/tracking, ordenes, mapa, supervision, garantia y alertas locales. Revisar alertas en memoria, refresh inicial, minuto exacto de tramo, cierre de tracking y endpoint tecnico heredado."
+                  },
+                  {
+                      "title":  "Coordinador shell/ViewModel y repositorio",
+                      "type":  "role-shell-viewmodel-repository",
+                      "source_path":  "app/src/main/java/com/redes/app/ui/coordinador",
+                      "documentation_path":  "docs/contexto/android/coordinador-shell-repositorio.md",
+                      "status":  "review",
+                      "priority":  "high",
+                      "last_documented":  "2026-06-17",
+                      "related_source_paths":  [
+                                                   "app/src/main/java/com/redes/app/ui/screens/CoordinadorShellScreen.kt",
+                                                   "app/src/main/java/com/redes/app/ui/coordinador/CoordinadorViewModel.kt",
+                                                   "app/src/main/java/com/redes/app/ui/coordinador/CoordinadorUiState.kt",
+                                                   "app/src/main/java/com/redes/app/data/coordinador",
+                                                   "app/src/main/java/com/redes/app/network/dto/CoordinadorDtos.kt",
+                                                   "app/src/main/java/com/redes/app/network/RedesApiClient.kt",
+                                                   "app/src/main/java/com/redes/app/network/MobileEndpoints.kt",
+                                                   "app/src/main/java/com/redes/app/ui/navigation/AppNavHost.kt"
+                                               ],
+                      "notes":  "Deep dive de shell coordinador, tabs/subtabs, ViewModel, repositorio, endpoints, DTOs y sustento de auditoria. Revisar endpoint compartido de mapa, backend coordinador, foto auditoria y errores silenciosos."
+                  },
+                  {
+                      "title":  "Force update",
+                      "type":  "flow",
+                      "source_path":  "app/src/main/java/com/redes/app/ui/update",
+                      "documentation_path":  "docs/contexto/android/force-update.md",
+                      "status":  "review",
+                      "priority":  "high",
+                      "last_documented":  "2026-06-21",
+                      "related_source_paths":  [
+                                                   "app/src/main/java/com/redes/app/ui/update/ForceUpdateViewModel.kt",
+                                                   "app/src/main/java/com/redes/app/ui/update/ForceUpdateState.kt",
+                                                   "app/src/main/java/com/redes/app/ui/screens/ForceUpdateScreen.kt",
+                                                   "app/src/main/java/com/redes/app/MainActivity.kt",
+                                                   "app/src/main/java/com/redes/app/ui/screens/SplashScreen.kt",
+                                                   "app/src/main/java/com/redes/app/ui/navigation/AppNavHost.kt",
+                                                   "app/src/main/java/com/redes/app/data/session",
+                                                   "app/src/main/java/com/redes/app/data/auth",
+                                                   "app/src/main/java/com/redes/app/data/local/SessionCacheDataSource.kt"
+                                               ],
+                      "paired_project":  "REDES",
+                      "paired_source_path":  "C:\\Proyectos\\REDES\\apps\\web\\src\\app\\api\\mobile\\bootstrap",
+                      "notes":  "Deep dive completado; Firestore directo app_config/android, bloqueo por versionMinima, fail-open ante error y sin refuerzo backend observado. Revision 2026-06-21: REDES agrega regla fuente app_config get publico; falta validar deploy/emulador."
+                  },
+                  {
+                      "title":  "Tecnico alertas/notificaciones y cierre de ruta",
+                      "type":  "role-shell-alerts-route-close",
+                      "source_path":  "app/src/main/java/com/redes/app/ui/tecnico",
+                      "documentation_path":  "docs/contexto/android/tecnico-alertas-cierre-ruta.md",
+                      "status":  "review",
+                      "priority":  "high",
+                      "last_documented":  "2026-06-18",
+                      "related_source_paths":  [
+                                                   "app/src/main/java/com/redes/app/ui/tecnico/TecnicoViewModel.kt",
+                                                   "app/src/main/java/com/redes/app/ui/tecnico/TecnicoUiState.kt",
+                                                   "app/src/main/java/com/redes/app/ui/screens/TecnicoShellScreen.kt",
+                                                   "app/src/main/java/com/redes/app/ui/screens/NotificationsScreen.kt",
+                                                   "app/src/main/java/com/redes/app/data/tecnico",
+                                                   "app/src/main/java/com/redes/app/data/alertas",
+                                                   "app/src/main/java/com/redes/app/data/tracking",
+                                                   "app/src/main/java/com/redes/app/network/MobileEndpoints.kt",
+                                                   "app/src/main/java/com/redes/app/network/RedesApiClient.kt",
+                                                   "app/src/main/java/com/redes/app/network/dto/TecnicoDtos.kt"
+                                               ],
+                      "paired_project":  "REDES",
+                      "paired_source_path":  "C:\\Proyectos\\REDES\\apps\\web\\src\\app\\api\\mobile",
+                      "notes":  "Deep dive de inicio jornada, cierre de ruta aprobable, alertas_app, notificaciones_tecnico, tracking local y endpoints backend. Revisar cierre local antes de confirmacion, rechazo/reinicio de tracking, Firestore rules y validacion en dispositivo."
+                  },
+                  {
+                      "title":  "Modelos/DTOs tecnico-supervisor-coordinador contra backend REDES",
+                      "type":  "model-dto-contract",
+                      "source_path":  "app/src/main/java/com/redes/app/network/dto + app/src/main/java/com/redes/app/data",
+                      "documentation_path":  "docs/contexto/android/models.md",
+                      "status":  "review",
+                      "priority":  "medium",
+                      "last_documented":  "2026-06-19",
+                      "paired_project":  "REDES",
+                      "paired_source_path":  "C:\\Proyectos\\REDES\\apps\\web\\src\\app\\api\\mobile",
+                      "notes":  "Deep dive de DTOs manuales JSONObject/JSONArray, modelos tecnico/supervisor/coordinador, defaults opt*, coordenadas nulas descartadas y contratos backend mobile. Requiere fixtures/pruebas de contrato y decisiones sobre degradacion silenciosa."
+                  },
+                  {
+                      "title":  "Almacen shell/ViewModel y repositorio",
+                      "type":  "role-shell-viewmodel-repository",
+                      "source_path":  "app/src/main/java/com/redes/app/ui/almacen",
+                      "documentation_path":  "docs/contexto/android/almacen-shell-repositorio.md",
+                      "status":  "review",
+                      "priority":  "high",
+                      "last_documented":  "2026-06-22",
+                      "related_source_paths":  [
+                                                   "app/src/main/java/com/redes/app/ui/screens/AlmacenShellScreen.kt",
+                                                   "app/src/main/java/com/redes/app/ui/almacen/AlmacenViewModel.kt",
+                                                   "app/src/main/java/com/redes/app/ui/almacen/AlmacenUiState.kt",
+                                                   "app/src/main/java/com/redes/app/data/almacen",
+                                                   "app/src/main/java/com/redes/app/network/dto/AlmacenDtos.kt",
+                                                   "app/src/main/java/com/redes/app/network/MobileEndpoints.kt",
+                                                   "app/src/main/java/com/redes/app/network/RedesApiClient.kt",
+                                                   "app/src/main/java/com/redes/app/di/AppContainer.kt",
+                                                   "app/src/main/java/com/redes/app/ui/navigation/AppNavHost.kt",
+                                                   "app/src/main/java/com/redes/app/MainActivity.kt"
+                                               ],
+                      "paired_project":  "REDES",
+                      "paired_source_path":  "C:\\Proyectos\\REDES\\apps\\web\\src\\app\\api\\mobile\\almacen",
+                      "notes":  "Revision incremental 2026-06-22: rol ALMACEN, tabs stock/liquidacion/instalaciones/mapa, repositorio remoto, DTOs y endpoints backend. Revisar refresh, permisos mapa, fixtures JSON y endpoint compartido de cuadrillas mapa."
+                  }
+              ],
+    "deep_dive_network":  {
+                              "status":  "review",
+                              "source_path":  "C:\\Proyectos\\REDES-MOBILE\\app\\src\\main\\java\\com\\redes\\app\\network",
+                              "documentation_path":  "C:\\Proyectos\\REDES-MOBILE\\docs\\contexto\\android\\network.md",
+                              "network_files_read":  [
+                                                         "app/src/main/java/com/redes/app/network/AuthTokenInterceptor.kt",
+                                                         "app/src/main/java/com/redes/app/network/FirebaseIdTokenProvider.kt",
+                                                         "app/src/main/java/com/redes/app/network/MobileEndpoints.kt",
+                                                         "app/src/main/java/com/redes/app/network/RedesApiClient.kt",
+                                                         "app/src/main/java/com/redes/app/network/RedesApiException.kt",
+                                                         "app/src/main/java/com/redes/app/network/TokenProvider.kt",
+                                                         "app/src/main/java/com/redes/app/network/dto/CoordinadorDtos.kt",
+                                                         "app/src/main/java/com/redes/app/network/dto/MobileBootstrapDto.kt",
+                                                         "app/src/main/java/com/redes/app/network/dto/MobileSessionDto.kt",
+                                                         "app/src/main/java/com/redes/app/network/dto/SupervisorDtos.kt",
+                                                         "app/src/main/java/com/redes/app/network/dto/TecnicoDtos.kt"
+                                                     ],
+                              "direct_consumer_files_read":  [
+                                                                 "app/src/main/java/com/redes/app/di/AppContainer.kt",
+                                                                 "app/src/main/java/com/redes/app/data/session/RemoteSessionRepository.kt",
+                                                                 "app/src/main/java/com/redes/app/data/presence/BackendPresenceRepository.kt",
+                                                                 "app/src/main/java/com/redes/app/data/tracking/TrackingRepository.kt",
+                                                                 "app/src/main/java/com/redes/app/data/tracking/TrackingManager.kt",
+                                                                 "app/src/main/java/com/redes/app/data/tracking/LocationTrackingService.kt",
+                                                                 "app/src/main/java/com/redes/app/data/alertas/RemoteAlertaRepository.kt",
+                                                                 "app/src/main/java/com/redes/app/data/tecnico/RemoteTecnicoRepository.kt",
+                                                                 "app/src/main/java/com/redes/app/data/tecnico/TecnicoModels.kt",
+                                                                 "app/src/main/java/com/redes/app/data/supervisor/RemoteSupervisorRepository.kt",
+                                                                 "app/src/main/java/com/redes/app/data/supervisor/SupervisorModels.kt",
+                                                                 "app/src/main/java/com/redes/app/data/coordinador/RemoteCoordinadorRepository.kt",
+                                                                 "app/src/main/java/com/redes/app/data/coordinador/CoordinadorModels.kt"
+                                                             ],
+                              "sensitive_files_not_copied":  [
+                                                                 "local.properties"
+                                                             ],
+                              "review_items":  [
+                                                   "SupervisorRepository.iniciarJornada llama endpoint tecnico /api/mobile/inicio-jornada.",
+                                                   "COORDINADOR_CUADRILLAS_MAPA apunta a ruta tecnica compartida.",
+                                                   "fetchCurrentSession existe pero no se encontro consumidor directo.",
+                                                   "postTracking envia X-Mobile-Role TECNICO aunque backend usa roles del token."
+                                               ],
+                              "closure_notes":  [
+                                                    "Cierre corto 2026-06-13: ruta real de LocationTrackingService.kt verificada en app/src/main/java/com/redes/app/data/tracking/LocationTrackingService.kt.",
+                                                    "La ruta app/src/main/java/com/redes/app/service/LocationTrackingService.kt no existe."
+                                                ]
+                          },
+    "deep_dive_sesion_auth":  {
+                                  "status":  "review",
+                                  "source_path":  "C:\\Proyectos\\REDES-MOBILE\\app\\src\\main\\java\\com\\redes\\app",
+                                  "documentation_path":  "C:\\Proyectos\\REDES-MOBILE\\docs\\contexto\\android\\session-auth-bootstrap.md",
+                                  "last_documented":  "2026-06-14",
+                                  "android_files_read":  [
+                                                             "app/src/main/java/com/redes/app/REDESApplication.kt",
+                                                             "app/src/main/java/com/redes/app/MainActivity.kt",
+                                                             "app/src/main/java/com/redes/app/di/AppContainer.kt",
+                                                             "app/src/main/java/com/redes/app/data/auth/AuthRepository.kt",
+                                                             "app/src/main/java/com/redes/app/data/auth/FirebaseAuthRepository.kt",
+                                                             "app/src/main/java/com/redes/app/data/session/BackendConfigurationException.kt",
+                                                             "app/src/main/java/com/redes/app/data/session/MobileBootstrap.kt",
+                                                             "app/src/main/java/com/redes/app/data/session/MobileSession.kt",
+                                                             "app/src/main/java/com/redes/app/data/session/RemoteSessionRepository.kt",
+                                                             "app/src/main/java/com/redes/app/data/session/SessionRepository.kt",
+                                                             "app/src/main/java/com/redes/app/data/local/SessionCacheDataSource.kt",
+                                                             "app/src/main/java/com/redes/app/network/AuthTokenInterceptor.kt",
+                                                             "app/src/main/java/com/redes/app/network/FirebaseIdTokenProvider.kt",
+                                                             "app/src/main/java/com/redes/app/network/MobileEndpoints.kt",
+                                                             "app/src/main/java/com/redes/app/network/RedesApiClient.kt",
+                                                             "app/src/main/java/com/redes/app/network/dto/MobileBootstrapDto.kt",
+                                                             "app/src/main/java/com/redes/app/network/dto/MobileSessionDto.kt",
+                                                             "app/src/main/java/com/redes/app/ui/auth/AuthUiState.kt",
+                                                             "app/src/main/java/com/redes/app/ui/auth/AuthViewModel.kt",
+                                                             "app/src/main/java/com/redes/app/ui/home/HomeUiState.kt",
+                                                             "app/src/main/java/com/redes/app/ui/home/HomeViewModel.kt",
+                                                             "app/src/main/java/com/redes/app/ui/update/ForceUpdateState.kt",
+                                                             "app/src/main/java/com/redes/app/ui/update/ForceUpdateViewModel.kt",
+                                                             "app/src/main/java/com/redes/app/ui/navigation/AppNavHost.kt",
+                                                             "app/src/main/java/com/redes/app/ui/screens/RoleSelectionScreen.kt",
+                                                             "app/src/main/java/com/redes/app/ui/screens/ComunicadosScreen.kt",
+                                                             "app/src/main/java/com/redes/app/ui/screens/HomeScreen.kt",
+                                                             "app/src/main/java/com/redes/app/ui/screens/ForceUpdateScreen.kt"
+                                                         ],
+                                  "not_found":  [
+                                                    "app/src/main/java/com/redes/app/network/dto/MobileDtos.kt"
+                                                ],
+                                  "review_items":  [
+                                                       "Backend puede devolver roles web sin shell Android especializado.",
+                                                       "defaultRole usa prioridad web y puede autoseleccionar un rol no operativo en mobile.",
+                                                       "Cache local puede mostrar sesion/rol previo si bootstrap falla.",
+                                                       "Usuario sin access habilitado se muestra como token rechazado.",
+                                                       "Force update lee Firestore directo y falla abierto ante errores.",
+                                                       "permissions se reciben y muestran, pero no se usan para gating mobile en esta unidad.",
+                                                       "fetchCurrentSession y /api/mobile/me existen, pero no se encontro consumidor directo."
+                                                   ],
+                                  "closure_notes":  [
+                                                        "Cierre corto 2026-06-14: ruta REDES apps/web/src/app/api/mobile/comunicados/[id]/seen/route.ts validada con Get-Content -LiteralPath; confirma flujo markComunicadoSeen -\u003e refresh bootstrap.",
+                                                        "La unidad queda en review porque las inconsistencias restantes requieren decision humana."
+                                                    ]
+                              },
+    "deep_dive_tracking_presence":  {
+                                        "status":  "review",
+                                        "source_path":  "C:\\Proyectos\\REDES-MOBILE\\app\\src\\main\\java\\com\\redes\\app",
+                                        "documentation_path":  "C:\\Proyectos\\REDES-MOBILE\\docs\\contexto\\android\\tracking.md",
+                                        "last_documented":  "2026-06-14",
+                                        "android_files_read":  [
+                                                                   "app/src/main/AndroidManifest.xml",
+                                                                   "app/src/main/java/com/redes/app/REDESApplication.kt",
+                                                                   "app/src/main/java/com/redes/app/MainActivity.kt",
+                                                                   "app/src/main/java/com/redes/app/di/AppContainer.kt",
+                                                                   "app/src/main/java/com/redes/app/ui/navigation/AppNavHost.kt",
+                                                                   "app/src/main/java/com/redes/app/data/tracking/TrackingManager.kt",
+                                                                   "app/src/main/java/com/redes/app/data/tracking/LocationTrackingService.kt",
+                                                                   "app/src/main/java/com/redes/app/data/tracking/TrackingRepository.kt",
+                                                                   "app/src/main/java/com/redes/app/data/presence/MobilePresenceManager.kt",
+                                                                   "app/src/main/java/com/redes/app/data/presence/PresenceRepository.kt",
+                                                                   "app/src/main/java/com/redes/app/data/presence/PresencePayload.kt",
+                                                                   "app/src/main/java/com/redes/app/data/presence/BackendPresenceRepository.kt",
+                                                                   "app/src/main/java/com/redes/app/data/presence/FirestorePresenceRepository.kt",
+                                                                   "app/src/main/java/com/redes/app/network/RedesApiClient.kt",
+                                                                   "app/src/main/java/com/redes/app/network/MobileEndpoints.kt",
+                                                                   "app/src/main/java/com/redes/app/ui/tecnico/TecnicoViewModel.kt",
+                                                                   "app/src/main/java/com/redes/app/ui/supervisor/SupervisorViewModel.kt"
+                                                               ],
+                                        "paired_redes_files_read":  [
+                                                                        "apps/web/src/app/api/mobile/tracking/route.ts",
+                                                                        "apps/web/src/app/api/mobile/presencia/route.ts",
+                                                                        "apps/web/src/app/api/mobile/supervisor/jornada/route.ts"
+                                                                    ],
+                                        "review_items":  [
+                                                             "postTracking envia X-Mobile-Role TECNICO aunque supervisor tambien inicia tracking.",
+                                                             "LocationTrackingService suprime MissingPermission y confia en AppNavHost.",
+                                                             "TrackingManager guarda last_start_ymd antes de confirmar arranque efectivo del service.",
+                                                             "Cierre tecnico bloquea reinicio diario con ruta_cerrada_ymd; cierre supervisor solo usa stop.",
+                                                             "BackendPresenceRepository ignora PresencePayload porque backend reconstruye roles/areas desde access context.",
+                                                             "FirestorePresenceRepository existe pero no esta conectado por DI.",
+                                                             "Presencia/tracking retornan silenciosamente si API_BASE_URL no esta configurado.",
+                                                             "Falta validacion en dispositivo real con Android 13/14, notificaciones y restricciones de bateria."
+                                                         ]
+                                    },
+    "next_recommended_unit":  "Coordinador shell/ViewModel y repositorio",
+    "incremental_refresh_2026_06_14":  {
+                                           "status":  "review",
+                                           "changed_files":  [
+                                                                 "app/src/main/java/com/redes/app/ui/navigation/AppDestination.kt",
+                                                                 "app/src/main/java/com/redes/app/ui/navigation/AppNavHost.kt",
+                                                                 "app/src/main/java/com/redes/app/di/AppContainer.kt",
+                                                                 "app/src/main/AndroidManifest.xml",
+                                                                 "app/src/main/java/com/redes/app/ui/screens/CoordinadorShellScreen.kt",
+                                                                 "app/src/main/java/com/redes/app/ui/screens/SupervisorShellScreen.kt",
+                                                                 "app/src/main/java/com/redes/app/data/tracking/LocationTrackingService.kt"
+                                                             ],
+                                           "documentation_updates":  [
+                                                                         "docs/contexto/android/navigation.md",
+                                                                         "docs/contexto/INDEX.md",
+                                                                         "docs/contexto/PENDIENTES.md",
+                                                                         "docs/contexto/CHANGELOG-CONTEXTO.md"
+                                                                     ],
+                                           "new_pending":  [
+                                                               "tracking/presencia",
+                                                               "supervisor shell/ViewModel",
+                                                               "coordinador shell/ViewModel",
+                                                               "force update",
+                                                               "roles backend sin shell mobile"
+                                                           ]
+                                       },
+    "incremental_refresh_2026_06_15":  {
+                                           "status":  "review",
+                                           "changed_files":  [
+                                                                 ".gitignore",
+                                                                 "app/build.gradle.kts",
+                                                                 "app/proguard-rules.pro",
+                                                                 "app/src/main/AndroidManifest.xml",
+                                                                 "app/src/main/java/com/redes/app/MainActivity.kt",
+                                                                 "app/src/main/java/com/redes/app/data/tecnico/RemoteTecnicoRepository.kt",
+                                                                 "app/src/main/java/com/redes/app/data/tecnico/TecnicoModels.kt",
+                                                                 "app/src/main/java/com/redes/app/data/tecnico/TecnicoRepository.kt",
+                                                                 "app/src/main/java/com/redes/app/di/AppContainer.kt",
+                                                                 "app/src/main/java/com/redes/app/network/MobileEndpoints.kt",
+                                                                 "app/src/main/java/com/redes/app/network/RedesApiClient.kt",
+                                                                 "app/src/main/java/com/redes/app/network/dto/TecnicoDtos.kt",
+                                                                 "app/src/main/java/com/redes/app/ui/navigation/AppDestination.kt",
+                                                                 "app/src/main/java/com/redes/app/ui/navigation/AppNavHost.kt",
+                                                                 "app/src/main/java/com/redes/app/ui/supervisor/SupervisorViewModel.kt",
+                                                                 "app/src/main/java/com/redes/app/ui/coordinador/CoordinadorViewModel.kt",
+                                                                 "app/src/main/java/com/redes/app/ui/update/ForceUpdateViewModel.kt"
+                                                             ],
+                                           "new_directories_detected":  [
+                                                                            "app/src/main/java/com/redes/app/data/alertas",
+                                                                            "app/src/main/java/com/redes/app/data/coordinador",
+                                                                            "app/src/main/java/com/redes/app/data/supervisor",
+                                                                            "app/src/main/java/com/redes/app/data/tracking",
+                                                                            "app/src/main/java/com/redes/app/ui/coordinador",
+                                                                            "app/src/main/java/com/redes/app/ui/supervisor",
+                                                                            "app/src/main/java/com/redes/app/ui/update"
+                                                                        ],
+                                           "documentation_updates":  [
+                                                                         "docs/contexto/INDEX.md",
+                                                                         "docs/contexto/PENDIENTES.md",
+                                                                         "docs/contexto/CHANGELOG-CONTEXTO.md"
+                                                                     ],
+                                           "new_pending":  [
+                                                               "supervisor shell/ViewModel y alertas",
+                                                               "coordinador shell/ViewModel y repositorio",
+                                                               "force update",
+                                                               "ignorar app/release e .idea salvo solicitud explicita"
+                                                           ],
+                                           "notion_sync":  "hub_updated_37e35bc7-7253-8166-be5c-ec09e4f30877"
+                                       },
+    "deep_dive_supervisor_shell_alertas":  {
+                                               "status":  "review",
+                                               "source_path":  "C:\\Proyectos\\REDES-MOBILE\\app\\src\\main\\java\\com\\redes\\app\\ui\\supervisor",
+                                               "documentation_path":  "C:\\Proyectos\\REDES-MOBILE\\docs\\contexto\\android\\supervisor-shell-alertas.md",
+                                               "last_documented":  "2026-06-16",
+                                               "files_read":  [
+                                                                  "app/src/main/java/com/redes/app/ui/screens/SupervisorShellScreen.kt",
+                                                                  "app/src/main/java/com/redes/app/ui/screens/SupervisorOrderDetailScreen.kt",
+                                                                  "app/src/main/java/com/redes/app/ui/supervisor/SupervisorViewModel.kt",
+                                                                  "app/src/main/java/com/redes/app/ui/supervisor/SupervisorUiState.kt",
+                                                                  "app/src/main/java/com/redes/app/ui/supervisor/SupervisorNotificationHelper.kt",
+                                                                  "app/src/main/java/com/redes/app/data/supervisor/SupervisorRepository.kt",
+                                                                  "app/src/main/java/com/redes/app/data/supervisor/RemoteSupervisorRepository.kt",
+                                                                  "app/src/main/java/com/redes/app/data/supervisor/SupervisorModels.kt",
+                                                                  "app/src/main/java/com/redes/app/data/alertas/AlertaApp.kt",
+                                                                  "app/src/main/java/com/redes/app/data/alertas/AlertaRepository.kt",
+                                                                  "app/src/main/java/com/redes/app/data/alertas/RemoteAlertaRepository.kt",
+                                                                  "app/src/main/java/com/redes/app/network/dto/SupervisorDtos.kt",
+                                                                  "app/src/main/java/com/redes/app/network/RedesApiClient.kt",
+                                                                  "app/src/main/java/com/redes/app/network/MobileEndpoints.kt",
+                                                                  "app/src/main/java/com/redes/app/ui/navigation/AppNavHost.kt",
+                                                                  "app/src/main/java/com/redes/app/ui/navigation/AppDestination.kt"
+                                                              ],
+                                               "findings":  [
+                                                                "SupervisorShellScreen cubre Inicio, Ordenes, Stock placeholder y Mapa.",
+                                                                "SupervisorViewModel carga home, orders y mapa en paralelo, y maneja jornada/tracking por postSupervisorJornadaEvento.",
+                                                                "Alertas de supervisor son locales en memoria y se publican con NotificationCompat.",
+                                                                "checkTramoAlertas depende de minutos exactos 07:45, 11:45 y 15:45.",
+                                                                "confirmarCerrarRuta detiene tracking local antes de confirmar FIN_RUTA en backend.",
+                                                                "SupervisorRepository.iniciarJornada existe pero apunta a postInicioJornada tecnico con X-Mobile-Role TECNICO.",
+                                                                "RemoteAlertaRepository escucha alertas_app y notificaciones_tecnico directo desde Firestore."
+                                                            ],
+                                               "review_items":  [
+                                                                    "Validar permisos Android 13/14 de ubicacion y notificaciones en dispositivo.",
+                                                                    "Decidir persistencia/sync de alertas supervisor.",
+                                                                    "Ejecutar checkGarantiasAlertas en primera carga si aplica.",
+                                                                    "Revisar tramo exacto y comportamiento background/doze.",
+                                                                    "Resolver iniciarJornada heredado del endpoint tecnico.",
+                                                                    "Confirmar orden correcto de detener tracking al cerrar ruta supervisor.",
+                                                                    "Alinear opciones hardcodeadas de garantia con backend/web.",
+                                                                    "Revisar Firestore rules para alertas_app y notificaciones_tecnico.",
+                                                                    "Revisar mojibake en textos UI."
+                                                                ],
+                                               "closure_notes":  [
+                                                                     "No se ejecuto build, app, emulador, pruebas en dispositivo, backend ni listeners Firestore reales.",
+                                                                     "No se modifico codigo fuente."
+                                                                 ]
+                                           },
+    "incremental_refresh_2026_06_16":  {
+                                           "status":  "review",
+                                           "redes_status":  "Solo cambios documentales bajo docs/contexto; no se detectaron cambios de codigo fuente.",
+                                           "changed_files":  [
+                                                                 ".gitignore",
+                                                                 "app/build.gradle.kts",
+                                                                 "app/proguard-rules.pro",
+                                                                 "app/src/main/AndroidManifest.xml",
+                                                                 "app/src/main/java/com/redes/app/MainActivity.kt",
+                                                                 "app/src/main/java/com/redes/app/data/tecnico/RemoteTecnicoRepository.kt",
+                                                                 "app/src/main/java/com/redes/app/data/tecnico/TecnicoModels.kt",
+                                                                 "app/src/main/java/com/redes/app/data/tecnico/TecnicoRepository.kt",
+                                                                 "app/src/main/java/com/redes/app/di/AppContainer.kt",
+                                                                 "app/src/main/java/com/redes/app/network/MobileEndpoints.kt",
+                                                                 "app/src/main/java/com/redes/app/network/RedesApiClient.kt",
+                                                                 "app/src/main/java/com/redes/app/network/dto/TecnicoDtos.kt",
+                                                                 "app/src/main/java/com/redes/app/ui/navigation/AppDestination.kt",
+                                                                 "app/src/main/java/com/redes/app/ui/navigation/AppNavHost.kt",
+                                                                 "app/src/main/java/com/redes/app/ui/screens/SupervisorShellScreen.kt",
+                                                                 "app/src/main/java/com/redes/app/ui/screens/SupervisorOrderDetailScreen.kt",
+                                                                 "app/src/main/java/com/redes/app/ui/screens/CoordinadorShellScreen.kt",
+                                                                 "app/src/main/java/com/redes/app/ui/screens/ForceUpdateScreen.kt",
+                                                                 "app/src/main/java/com/redes/app/ui/supervisor/SupervisorViewModel.kt",
+                                                                 "app/src/main/java/com/redes/app/ui/coordinador/CoordinadorViewModel.kt",
+                                                                 "app/src/main/java/com/redes/app/ui/update/ForceUpdateViewModel.kt"
+                                                             ],
+                                           "new_directories_detected":  [
+                                                                            "app/src/main/java/com/redes/app/data/alertas",
+                                                                            "app/src/main/java/com/redes/app/data/coordinador",
+                                                                            "app/src/main/java/com/redes/app/data/supervisor",
+                                                                            "app/src/main/java/com/redes/app/data/tracking",
+                                                                            "app/src/main/java/com/redes/app/ui/coordinador",
+                                                                            "app/src/main/java/com/redes/app/ui/supervisor",
+                                                                            "app/src/main/java/com/redes/app/ui/update"
+                                                                        ],
+                                           "documentation_updates":  [
+                                                                         "docs/contexto/android/screens.md",
+                                                                         "docs/contexto/android/viewmodels.md",
+                                                                         "docs/contexto/INDEX.md",
+                                                                         "docs/contexto/PENDIENTES.md",
+                                                                         "docs/contexto/CHANGELOG-CONTEXTO.md",
+                                                                         "docs/contexto/indexes/source-index.json"
+                                                                     ],
+                                           "new_pending":  [
+                                                               "coordinador shell/ViewModel y repositorio",
+                                                               "tecnico alertas/notificaciones",
+                                                               "force update",
+                                                               "deep dive de pantallas y ViewModels"
+                                                           ],
+                                           "notion_sync":  "hub_updated_37e35bc7-7253-8166-be5c-ec09e4f30877"
+                                       },
+    "incremental_context_2026_06_16_supervisor_shell_alertas":  {
+                                                                    "status":  "review",
+                                                                    "documentation_updates":  [
+                                                                                                  "docs/contexto/android/supervisor-shell-alertas.md",
+                                                                                                  "docs/contexto/android/screens.md",
+                                                                                                  "docs/contexto/android/viewmodels.md",
+                                                                                                  "docs/contexto/INDEX.md",
+                                                                                                  "docs/contexto/PENDIENTES.md",
+                                                                                                  "docs/contexto/CHANGELOG-CONTEXTO.md",
+                                                                                                  "docs/contexto/indexes/source-index.json"
+                                                                                              ],
+                                                                    "new_pending":  [
+                                                                                        "permisos Android supervisor en dispositivo",
+                                                                                        "alertas supervisor locales no persistidas",
+                                                                                        "checkGarantiasAlertas ausente en refreshAll",
+                                                                                        "alertas de tramo por minuto exacto",
+                                                                                        "iniciarJornada heredado del endpoint tecnico",
+                                                                                        "tracking detenido antes de confirmar FIN_RUTA",
+                                                                                        "opciones garantia hardcodeadas",
+                                                                                        "Firestore rules para alertas_app y notificaciones_tecnico"
+                                                                                    ],
+                                                                    "next_recommended_unit":  "Coordinador shell/ViewModel y repositorio"
+                                                                },
+    "incremental_context_2026_06_17_coordinador_shell_repositorio":  {
+                                                                         "status":  "review",
+                                                                         "redes_status":  "Solo cambios documentales bajo docs/contexto; no se detectaron cambios de codigo fuente.",
+                                                                         "files_read":  [
+                                                                                            "app/src/main/java/com/redes/app/ui/screens/CoordinadorShellScreen.kt",
+                                                                                            "app/src/main/java/com/redes/app/ui/coordinador/CoordinadorViewModel.kt",
+                                                                                            "app/src/main/java/com/redes/app/ui/coordinador/CoordinadorUiState.kt",
+                                                                                            "app/src/main/java/com/redes/app/data/coordinador/CoordinadorRepository.kt",
+                                                                                            "app/src/main/java/com/redes/app/data/coordinador/RemoteCoordinadorRepository.kt",
+                                                                                            "app/src/main/java/com/redes/app/data/coordinador/CoordinadorModels.kt",
+                                                                                            "app/src/main/java/com/redes/app/network/dto/CoordinadorDtos.kt",
+                                                                                            "app/src/main/java/com/redes/app/network/RedesApiClient.kt",
+                                                                                            "app/src/main/java/com/redes/app/network/MobileEndpoints.kt",
+                                                                                            "app/src/main/java/com/redes/app/di/AppContainer.kt",
+                                                                                            "app/src/main/java/com/redes/app/ui/navigation/AppNavHost.kt"
+                                                                                        ],
+                                                                         "documentation_updates":  [
+                                                                                                       "docs/contexto/android/coordinador-shell-repositorio.md",
+                                                                                                       "docs/contexto/README.md",
+                                                                                                       "docs/contexto/INDEX.md",
+                                                                                                       "docs/contexto/PENDIENTES.md",
+                                                                                                       "docs/contexto/android/screens.md",
+                                                                                                       "docs/contexto/android/viewmodels.md",
+                                                                                                       "docs/contexto/android/repositories.md",
+                                                                                                       "docs/contexto/CHANGELOG-CONTEXTO.md",
+                                                                                                       "docs/contexto/indexes/source-index.json"
+                                                                                                   ],
+                                                                         "findings":  [
+                                                                                          "CoordinadorViewModel se habilita solo con usuario y rol COORDINADOR.",
+                                                                                          "refreshAll carga resumen, cuadrillas y mapa en paralelo.",
+                                                                                          "Shell coordinador cubre inicio, cuadrillas, mapa, almacen, auditoria, predespacho, ventas y plantillas.",
+                                                                                          "sustainEquipo normaliza SN, lee bytes desde URI y envia multipart a auditoria/sustentar.",
+                                                                                          "Mapa de cuadrillas coordinador reutiliza /api/mobile/tecnico/cuadrillas-mapa con X-Mobile-Role COORDINADOR."
+                                                                                      ],
+                                                                         "new_pending":  [
+                                                                                             "force update",
+                                                                                             "tecnico alertas/notificaciones",
+                                                                                             "modelos/DTOs contra backend",
+                                                                                             "endpoint coordinador propio para mapa de cuadrillas",
+                                                                                             "validacion en dispositivo de sustento fotografico",
+                                                                                             "errores silenciosos en cargas secundarias"
+                                                                                         ],
+                                                                         "next_recommended_unit":  "Force update"
+                                                                     },
+    "incremental_context_2026_06_18_force_update":  {
+                                                        "status":  "review",
+                                                        "paired_project":  "REDES",
+                                                        "files_read":  [
+                                                                           "app/src/main/java/com/redes/app/ui/update/ForceUpdateViewModel.kt",
+                                                                           "app/src/main/java/com/redes/app/ui/update/ForceUpdateState.kt",
+                                                                           "app/src/main/java/com/redes/app/ui/screens/ForceUpdateScreen.kt",
+                                                                           "app/src/main/java/com/redes/app/MainActivity.kt",
+                                                                           "app/src/main/java/com/redes/app/ui/screens/SplashScreen.kt",
+                                                                           "app/src/main/java/com/redes/app/ui/navigation/AppNavHost.kt",
+                                                                           "app/src/main/java/com/redes/app/ui/home/HomeViewModel.kt",
+                                                                           "app/src/main/java/com/redes/app/ui/home/HomeUiState.kt",
+                                                                           "app/src/main/java/com/redes/app/data/auth/AuthRepository.kt",
+                                                                           "app/src/main/java/com/redes/app/data/auth/FirebaseAuthRepository.kt",
+                                                                           "app/src/main/java/com/redes/app/data/session/MobileBootstrap.kt",
+                                                                           "app/src/main/java/com/redes/app/data/session/MobileSession.kt",
+                                                                           "app/src/main/java/com/redes/app/data/session/RemoteSessionRepository.kt",
+                                                                           "app/src/main/java/com/redes/app/data/session/SessionRepository.kt",
+                                                                           "app/src/main/java/com/redes/app/data/local/SessionCacheDataSource.kt",
+                                                                           "app/src/main/java/com/redes/app/network/RedesApiClient.kt",
+                                                                           "app/src/main/java/com/redes/app/network/dto/MobileBootstrapDto.kt",
+                                                                           "C:/Proyectos/REDES/apps/web/src/app/api/mobile/bootstrap/route.ts",
+                                                                           "C:/Proyectos/REDES/apps/web/src/core/auth/mobileBootstrap.ts"
+                                                                       ],
+                                                        "documentation_updates":  [
+                                                                                      "docs/contexto/android/force-update.md",
+                                                                                      "docs/contexto/README.md",
+                                                                                      "docs/contexto/INDEX.md",
+                                                                                      "docs/contexto/PENDIENTES.md",
+                                                                                      "docs/contexto/CHANGELOG-CONTEXTO.md",
+                                                                                      "docs/contexto/indexes/source-index.json",
+                                                                                      "C:/Proyectos/REDES/docs/contexto/PENDIENTES.md",
+                                                                                      "C:/Proyectos/REDES/docs/contexto/CHANGELOG-CONTEXTO.md",
+                                                                                      "docs/contexto/android/screens.md",
+                                                                                      "docs/contexto/android/viewmodels.md"
+                                                                                  ],
+                                                        "findings":  [
+                                                                         "ForceUpdateViewModel lee Firestore directo app_config/android.",
+                                                                         "BuildConfig.VERSION_CODE se compara con versionMinima.",
+                                                                         "UpdateRequired bloquea AppNavHost y muestra ForceUpdateScreen.",
+                                                                         "Errores de Firestore hacen fail-open a UpToDate.",
+                                                                         "No se observo refuerzo de version minima en REDES /api/mobile/bootstrap."
+                                                                     ],
+                                                        "review_items":  [
+                                                                             "Confirmar fail-open versus bloqueo/reintento.",
+                                                                             "Decidir refuerzo backend en bootstrap.",
+                                                                             "Validar Firestore rules para app_config/android.",
+                                                                             "Definir contrato operativo de versionMinima/versionNominalMinima/mensaje.",
+                                                                             "Agregar observabilidad si aplica."
+                                                                         ],
+                                                        "next_recommended_unit":  "Tecnico alertas/notificaciones y cierre de ruta"
+                                                    },
+    "incremental_context_2026_06_18_tecnico_alertas_cierre_ruta":  {
+                                                                       "status":  "review",
+                                                                       "paired_project":  "REDES",
+                                                                       "files_read":  [
+                                                                                          "app/src/main/java/com/redes/app/ui/tecnico/TecnicoViewModel.kt",
+                                                                                          "app/src/main/java/com/redes/app/ui/tecnico/TecnicoUiState.kt",
+                                                                                          "app/src/main/java/com/redes/app/ui/screens/TecnicoShellScreen.kt",
+                                                                                          "app/src/main/java/com/redes/app/ui/screens/NotificationsScreen.kt",
+                                                                                          "app/src/main/java/com/redes/app/data/tecnico/RemoteTecnicoRepository.kt",
+                                                                                          "app/src/main/java/com/redes/app/data/tecnico/TecnicoRepository.kt",
+                                                                                          "app/src/main/java/com/redes/app/data/tecnico/TecnicoModels.kt",
+                                                                                          "app/src/main/java/com/redes/app/data/alertas/RemoteAlertaRepository.kt",
+                                                                                          "app/src/main/java/com/redes/app/data/alertas/AlertaRepository.kt",
+                                                                                          "app/src/main/java/com/redes/app/data/alertas/AlertaApp.kt",
+                                                                                          "app/src/main/java/com/redes/app/data/tracking/TrackingManager.kt",
+                                                                                          "app/src/main/java/com/redes/app/data/tracking/LocationTrackingService.kt",
+                                                                                          "app/src/main/java/com/redes/app/data/tracking/TrackingRepository.kt",
+                                                                                          "app/src/main/java/com/redes/app/network/MobileEndpoints.kt",
+                                                                                          "app/src/main/java/com/redes/app/network/RedesApiClient.kt",
+                                                                                          "app/src/main/java/com/redes/app/network/dto/TecnicoDtos.kt",
+                                                                                          "C:/Proyectos/REDES/apps/web/src/app/api/mobile/alertas-app/route.ts",
+                                                                                          "C:/Proyectos/REDES/apps/web/src/app/api/mobile/inicio-jornada/route.ts",
+                                                                                          "C:/Proyectos/REDES/apps/web/src/app/api/mobile/tracking/route.ts",
+                                                                                          "C:/Proyectos/REDES/apps/web/src/app/api/mobile/tecnico/home/route.ts",
+                                                                                          "C:/Proyectos/REDES/apps/web/src/app/api/mobile/tecnico/ordenes/route.ts",
+                                                                                          "C:/Proyectos/REDES/apps/web/src/app/api/mobile/tecnico/ordenes/[id]/route.ts",
+                                                                                          "C:/Proyectos/REDES/apps/web/src/app/api/mobile/tecnico/mapa/route.ts",
+                                                                                          "C:/Proyectos/REDES/apps/web/src/app/api/mobile/tecnico/cuadrillas-mapa/route.ts",
+                                                                                          "C:/Proyectos/REDES/apps/web/src/app/api/alertas-app/[id]/responder/route.ts",
+                                                                                          "C:/Proyectos/REDES/apps/web/src/domain/alertas-app/repo.ts",
+                                                                                          "C:/Proyectos/REDES/apps/web/src/domain/ordenes/notificaciones-tecnico.ts"
+                                                                                      ],
+                                                                       "documentation_updates":  [
+                                                                                                     "docs/contexto/android/tecnico-alertas-cierre-ruta.md",
+                                                                                                     "docs/contexto/README.md",
+                                                                                                     "docs/contexto/INDEX.md",
+                                                                                                     "docs/contexto/PENDIENTES.md",
+                                                                                                     "docs/contexto/android/screens.md",
+                                                                                                     "docs/contexto/android/viewmodels.md",
+                                                                                                     "docs/contexto/android/repositories.md",
+                                                                                                     "docs/contexto/CHANGELOG-CONTEXTO.md",
+                                                                                                     "docs/contexto/indexes/source-index.json"
+                                                                                                 ],
+                                                                       "findings":  [
+                                                                                        "Cierre tecnico detiene tracking local antes de confirmar alerta remota.",
+                                                                                        "La escritura oficial RUTA_CERRADA ocurre al aceptar la alerta desde web.",
+                                                                                        "alertas_app evita duplicados pendientes por tipo y cuadrilla.",
+                                                                                        "notificaciones_tecnico es inbox persistido por cuadrilla y Android marca leido=true directo en Firestore.",
+                                                                                        "cuadrillas-mapa excluye cuadrillas con RUTA_CERRADA hoy."
+                                                                                    ],
+                                                                       "review_items":  [
+                                                                                            "Confirmar orden correcto entre detener tracking y crear alerta.",
+                                                                                            "Definir manejo de rechazo y reactivacion de tracking.",
+                                                                                            "Validar Firestore rules de alertas_app y notificaciones_tecnico.",
+                                                                                            "Decidir notificaciones de rechazo.",
+                                                                                            "Validar permisos/foreground service en dispositivo."
+                                                                                        ],
+                                                                       "next_recommended_unit":  "Modelos/DTOs tecnico-supervisor-coordinador contra backend REDES"
+                                                                   },
+    "incremental_context_2026_06_19_modelos_dtos":  {
+                                                        "status":  "review",
+                                                        "paired_project":  "REDES",
+                                                        "files_read":  [
+                                                                           "app/src/main/java/com/redes/app/network/dto/MobileSessionDto.kt",
+                                                                           "app/src/main/java/com/redes/app/network/dto/MobileBootstrapDto.kt",
+                                                                           "app/src/main/java/com/redes/app/network/dto/TecnicoDtos.kt",
+                                                                           "app/src/main/java/com/redes/app/network/dto/SupervisorDtos.kt",
+                                                                           "app/src/main/java/com/redes/app/network/dto/CoordinadorDtos.kt",
+                                                                           "app/src/main/java/com/redes/app/data/tecnico/TecnicoModels.kt",
+                                                                           "app/src/main/java/com/redes/app/data/supervisor/SupervisorModels.kt",
+                                                                           "app/src/main/java/com/redes/app/data/coordinador/CoordinadorModels.kt",
+                                                                           "C:/Proyectos/REDES/apps/web/src/core/auth/mobileBootstrap.ts",
+                                                                           "C:/Proyectos/REDES/apps/web/src/app/api/mobile/bootstrap/route.ts",
+                                                                           "C:/Proyectos/REDES/apps/web/src/app/api/mobile/me/route.ts",
+                                                                           "C:/Proyectos/REDES/apps/web/src/app/api/mobile/tecnico/**/route.ts",
+                                                                           "C:/Proyectos/REDES/apps/web/src/app/api/mobile/supervisor/**/route.ts",
+                                                                           "C:/Proyectos/REDES/apps/web/src/app/api/mobile/coordinador/**/route.ts"
+                                                                       ],
+                                                        "documentation_updates":  [
+                                                                                      "docs/contexto/android/models.md",
+                                                                                      "docs/contexto/README.md",
+                                                                                      "docs/contexto/INDEX.md",
+                                                                                      "docs/contexto/PENDIENTES.md",
+                                                                                      "docs/contexto/CHANGELOG-CONTEXTO.md",
+                                                                                      "docs/contexto/indexes/source-index.json"
+                                                                                  ],
+                                                        "findings":  [
+                                                                         "Los DTOs parsean JSON manualmente con opt* y pueden degradar cambios de contrato a valores vacios/cero.",
+                                                                         "Los items de mapa sin lat/lng se descartan silenciosamente.",
+                                                                         "Varias ramas vacias de endpoints coordinador pueden omitir metadata esperada como ymd/ym/updateInfo.",
+                                                                         "CoordinadorOrdenDetail acepta wrapper item o body directo, alineado con el endpoint coordinador nuevo.",
+                                                                         "CuadrillaMapa vive bajo data/tecnico aunque se reutiliza por roles no tecnicos."
+                                                                     ],
+                                                        "review_items":  [
+                                                                             "Crear fixtures/pruebas de contrato JSON para endpoints mobile criticos.",
+                                                                             "Decidir falla fuerte versus degradacion silenciosa para campos obligatorios.",
+                                                                             "Alinear metadata de respuestas vacias en endpoints coordinador.",
+                                                                             "Evaluar modelo comun para CuadrillaMapa.",
+                                                                             "Revisar mojibake en fuentes Android antes de cierre visual."
+                                                                         ],
+                                                        "next_recommended_unit":  "Repositorios por rol restantes y manejo de errores/resultados"
+                                                    },
+    "incremental_context_2026_06_20_repositorios_resultados":  {
+                                                                   "status":  "review",
+                                                                   "files_read":  [
+                                                                                      "app/src/main/java/com/redes/app/di/AppContainer.kt",
+                                                                                      "app/src/main/java/com/redes/app/data/auth/AuthRepository.kt",
+                                                                                      "app/src/main/java/com/redes/app/data/auth/FirebaseAuthRepository.kt",
+                                                                                      "app/src/main/java/com/redes/app/data/session/SessionRepository.kt",
+                                                                                      "app/src/main/java/com/redes/app/data/session/RemoteSessionRepository.kt",
+                                                                                      "app/src/main/java/com/redes/app/data/presence/PresenceRepository.kt",
+                                                                                      "app/src/main/java/com/redes/app/data/presence/BackendPresenceRepository.kt",
+                                                                                      "app/src/main/java/com/redes/app/data/tracking/TrackingRepository.kt",
+                                                                                      "app/src/main/java/com/redes/app/data/alertas/AlertaRepository.kt",
+                                                                                      "app/src/main/java/com/redes/app/data/alertas/RemoteAlertaRepository.kt",
+                                                                                      "app/src/main/java/com/redes/app/data/tecnico/TecnicoRepository.kt",
+                                                                                      "app/src/main/java/com/redes/app/data/tecnico/RemoteTecnicoRepository.kt",
+                                                                                      "app/src/main/java/com/redes/app/data/supervisor/SupervisorRepository.kt",
+                                                                                      "app/src/main/java/com/redes/app/data/supervisor/RemoteSupervisorRepository.kt",
+                                                                                      "app/src/main/java/com/redes/app/data/coordinador/CoordinadorRepository.kt",
+                                                                                      "app/src/main/java/com/redes/app/data/coordinador/RemoteCoordinadorRepository.kt"
+                                                                                  ],
+                                                                   "documentation_updates":  [
+                                                                                                 "docs/contexto/android/repositories.md",
+                                                                                                 "docs/contexto/README.md",
+                                                                                                 "docs/contexto/INDEX.md",
+                                                                                                 "docs/contexto/PENDIENTES.md",
+                                                                                                 "docs/contexto/CHANGELOG-CONTEXTO.md",
+                                                                                                 "docs/contexto/indexes/source-index.json"
+                                                                                             ],
+                                                                   "findings":  [
+                                                                                    "Session valida apiClient.isConfigured antes de bootstrap y comunicados.",
+                                                                                    "Repositorios tecnico/supervisor/coordinador envuelven llamadas en Result\u003cT\u003e con withContext(Dispatchers.IO).",
+                                                                                    "TrackingRepository no propaga Result y postTracking encola llamada asincrona.",
+                                                                                    "RemoteAlertaRepository escucha Firestore y silencia errores hacia UI.",
+                                                                                    "RemoteSupervisorRepository.iniciarJornada sigue delegando en endpoint tecnico /api/mobile/inicio-jornada."
+                                                                                ],
+                                                                   "review_items":  [
+                                                                                        "Unificar validacion de API_BASE_URL o centralizar fallo en RedesApiClient.",
+                                                                                        "Exponer errores de tracking, presencia y listeners Firestore si negocio lo requiere.",
+                                                                                        "Validar o retirar inicio jornada supervisor contra endpoint tecnico.",
+                                                                                        "Alinear validacion local de multipart entre tecnico y coordinador.",
+                                                                                        "Evaluar modelo comun para CuadrillaMapa."
+                                                                                    ],
+                                                                   "next_recommended_unit":  "Pantallas por rol y UI comun/tema"
+                                                               },
+    "incremental_refresh_2026_06_21_force_update_rules":  {
+                                                              "status":  "review",
+                                                              "paired_project":  "REDES",
+                                                              "files_read":  [
+                                                                                 "C:/Proyectos/REDES/firebase/firestore.rules",
+                                                                                 "docs/contexto/android/force-update.md"
+                                                                             ],
+                                                              "documentation_updates":  [
+                                                                                            "docs/contexto/android/force-update.md",
+                                                                                            "docs/contexto/INDEX.md",
+                                                                                            "docs/contexto/PENDIENTES.md",
+                                                                                            "docs/contexto/CHANGELOG-CONTEXTO.md",
+                                                                                            "docs/contexto/indexes/source-index.json"
+                                                                                        ],
+                                                              "findings":  [
+                                                                               "REDES fuente permite get publico en app_config/{docId}, requerido antes de login",
+                                                                               "pendiente cambia de regla faltante a validacion de deploy/emulador",
+                                                                               "no se abrio nuevo deep dive; pantallas/UI sigue como siguiente unidad"
+                                                                           ],
+                                                              "review_items":  [
+                                                                                   "validar deploy de Firestore rules",
+                                                                                   "mantener decision de fail-open",
+                                                                                   "evaluar refuerzo backend en /api/mobile/bootstrap",
+                                                                                   "definir observabilidad y UX de reintento"
+                                                                               ],
+                                                              "next_recommended_unit":  "Pantallas por rol y UI comun/tema"
+                                                          },
+    "incremental_refresh_2026_06_22_almacen":  {
+                                                   "status":  "review",
+                                                   "paired_project":  "REDES",
+                                                   "files_read":  [
+                                                                      "app/src/main/java/com/redes/app/ui/screens/AlmacenShellScreen.kt",
+                                                                      "app/src/main/java/com/redes/app/ui/almacen/AlmacenViewModel.kt",
+                                                                      "app/src/main/java/com/redes/app/ui/almacen/AlmacenUiState.kt",
+                                                                      "app/src/main/java/com/redes/app/data/almacen/AlmacenRepository.kt",
+                                                                      "app/src/main/java/com/redes/app/data/almacen/RemoteAlmacenRepository.kt",
+                                                                      "app/src/main/java/com/redes/app/data/almacen/AlmacenModels.kt",
+                                                                      "app/src/main/java/com/redes/app/network/dto/AlmacenDtos.kt",
+                                                                      "app/src/main/java/com/redes/app/network/MobileEndpoints.kt",
+                                                                      "app/src/main/java/com/redes/app/network/RedesApiClient.kt",
+                                                                      "app/src/main/java/com/redes/app/di/AppContainer.kt",
+                                                                      "app/src/main/java/com/redes/app/ui/navigation/AppNavHost.kt",
+                                                                      "app/src/main/java/com/redes/app/MainActivity.kt",
+                                                                      "C:/Proyectos/REDES/apps/web/src/app/api/mobile/almacen/stock/route.ts",
+                                                                      "C:/Proyectos/REDES/apps/web/src/app/api/mobile/almacen/liquidacion/route.ts",
+                                                                      "C:/Proyectos/REDES/apps/web/src/app/api/mobile/almacen/instalaciones/route.ts"
+                                                                  ],
+                                                   "documentation_updates":  [
+                                                                                 "docs/contexto/android/almacen-shell-repositorio.md",
+                                                                                 "docs/contexto/README.md",
+                                                                                 "docs/contexto/INDEX.md",
+                                                                                 "docs/contexto/PENDIENTES.md",
+                                                                                 "docs/contexto/android/screens.md",
+                                                                                 "docs/contexto/android/repositories.md",
+                                                                                 "docs/contexto/android/models.md",
+                                                                                 "docs/contexto/CHANGELOG-CONTEXTO.md",
+                                                                                 "docs/contexto/indexes/source-index.json"
+                                                                             ],
+                                                   "findings":  [
+                                                                    "Nuevo shell ALMACEN conectado por rol seleccionado desde AppNavHost y MainActivity.",
+                                                                    "RemoteAlmacenRepository usa Result\u003cT\u003e y endpoints /api/mobile/almacen/*.",
+                                                                    "Mapa de almacen reutiliza /api/mobile/tecnico/cuadrillas-mapa con X-Mobile-Role ALMACEN.",
+                                                                    "DTOs de almacen usan opt* y pueden degradar cambios de contrato a valores vacios/cero.",
+                                                                    "AlmacenViewModel.refreshAll puede apagar isRefreshing antes de que termine la carga real."
+                                                                ],
+                                                   "review_items":  [
+                                                                        "Validar shell ALMACEN en dispositivo real, especialmente mapa y permisos.",
+                                                                        "Crear fixtures JSON para stock, liquidacion e instalaciones.",
+                                                                        "Decidir endpoint propio de mapa para almacen o mantener ruta tecnica compartida.",
+                                                                        "Revisar sincronizacion de isRefreshing.",
+                                                                        "Confirmar definicion final del tab LIQUIDACION."
+                                                                    ],
+                                                   "next_recommended_unit":  "Pantallas por rol y UI comun/tema"
+                                               }
+}
