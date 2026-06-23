@@ -13,11 +13,22 @@ import com.redes.app.data.session.RemoteSessionRepository
 import com.redes.app.data.session.SessionRepository
 import com.redes.app.data.tecnico.RemoteTecnicoRepository
 import com.redes.app.data.tecnico.TecnicoRepository
+import com.redes.app.data.alertas.AlertaRepository
+import com.redes.app.data.alertas.RemoteAlertaRepository
+import com.redes.app.data.almacen.AlmacenRepository
+import com.redes.app.data.almacen.RemoteAlmacenRepository
+import com.redes.app.data.coordinador.CoordinadorRepository
+import com.redes.app.data.coordinador.RemoteCoordinadorRepository
+import com.redes.app.data.supervisor.SupervisorRepository
+import com.redes.app.data.supervisor.RemoteSupervisorRepository
+import com.redes.app.data.tracking.TrackingManager
+import com.redes.app.data.tracking.TrackingRepository
 import com.redes.app.network.AuthTokenInterceptor
 import com.redes.app.network.FirebaseIdTokenProvider
 import com.redes.app.network.RedesApiClient
 import com.redes.app.network.TokenProvider
 import okhttp3.OkHttpClient
+import java.util.concurrent.TimeUnit
 
 interface AppContainer {
     val authRepository: AuthRepository
@@ -25,6 +36,12 @@ interface AppContainer {
     val sessionRepository: SessionRepository
     val presenceManager: MobilePresenceManager
     val tecnicoRepository: TecnicoRepository
+    val trackingRepository: TrackingRepository
+    val trackingManager: TrackingManager
+    val alertaRepository: AlertaRepository
+    val coordinadorRepository: CoordinadorRepository
+    val supervisorRepository: SupervisorRepository
+    val almacenRepository: AlmacenRepository
 }
 
 class DefaultAppContainer(
@@ -49,6 +66,9 @@ class DefaultAppContainer(
     private val httpClient: OkHttpClient by lazy {
         OkHttpClient.Builder()
             .addInterceptor(AuthTokenInterceptor(tokenProvider))
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(90, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
             .build()
     }
 
@@ -74,7 +94,10 @@ class DefaultAppContainer(
     }
 
     override val tecnicoRepository: TecnicoRepository by lazy {
-        RemoteTecnicoRepository(apiClient = apiClient)
+        RemoteTecnicoRepository(
+            context = context,
+            apiClient = apiClient,
+        )
     }
 
     override val presenceManager: MobilePresenceManager by lazy {
@@ -83,5 +106,32 @@ class DefaultAppContainer(
             sessionRepository = sessionRepository,
             presenceRepository = presenceRepository,
         )
+    }
+
+    override val trackingRepository: TrackingRepository by lazy {
+        TrackingRepository(apiClient = apiClient)
+    }
+
+    override val trackingManager: TrackingManager by lazy {
+        TrackingManager(context = context)
+    }
+
+    override val alertaRepository: AlertaRepository by lazy {
+        RemoteAlertaRepository(
+            context = context,
+            apiClient = apiClient,
+        )
+    }
+
+    override val coordinadorRepository: CoordinadorRepository by lazy {
+        RemoteCoordinadorRepository(context = context, apiClient = apiClient)
+    }
+
+    override val supervisorRepository: SupervisorRepository by lazy {
+        RemoteSupervisorRepository(apiClient = apiClient)
+    }
+
+    override val almacenRepository: AlmacenRepository by lazy {
+        RemoteAlmacenRepository(apiClient = apiClient)
     }
 }

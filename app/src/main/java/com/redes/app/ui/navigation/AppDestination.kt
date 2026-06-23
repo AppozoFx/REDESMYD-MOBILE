@@ -11,4 +11,10 @@ sealed class AppDestination(val route: String) {
     data object TecnicoOrderDetail : AppDestination("tecnico_order_detail/{orderId}") {
         fun createRoute(orderId: String): String = "tecnico_order_detail/$orderId"
     }
+    data object SupervisorOrderDetail : AppDestination("supervisor_order_detail/{orderId}") {
+        fun createRoute(orderId: String): String = "supervisor_order_detail/$orderId"
+    }
+    data object CoordinadorOrderDetail : AppDestination("coordinador_order_detail/{orderId}") {
+        fun createRoute(orderId: String): String = "coordinador_order_detail/$orderId"
+    }
 }

@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.REDES" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.REDES" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:fitsSystemWindows">false</item>
+    </style>
+
+    <style name="Theme.REDES.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/redes_night</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/redes_logo</item>
+        <item name="windowSplashScreenIconBackgroundColor">@color/white</item>
+        <item name="postSplashScreenTheme">@style/Theme.REDES</item>
+    </style>
+
 </resources>

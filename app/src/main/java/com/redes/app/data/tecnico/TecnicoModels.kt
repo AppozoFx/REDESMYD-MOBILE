@@ -9,7 +9,17 @@ data class TecnicoCuadrillaSummary(
     val coordinadorNombre: String,
     val gestorUid: String,
     val gestorNombre: String,
+    val gestorWhatsapp: String = "",
     val integrantes: List<TecnicoMember>,
+)
+
+data class NotifTecnicoItem(
+    val id: String,
+    val tipo: String,
+    val titulo: String,
+    val mensaje: String,
+    val leido: Boolean,
+    val creadoAt: Long?,
 )
 
 data class TecnicoMember(
@@ -24,6 +34,21 @@ data class TecnicoHomeData(
     val cuadrilla: TecnicoCuadrillaSummary,
     val kpis: TecnicoKpis,
     val equipmentSummary: List<TecnicoEquipmentSummary>,
+    val cableado: TecnicoCableadoSummary = TecnicoCableadoSummary(0, 0),
+    val plantillasPendientes: List<TecnicoPlantillaPendiente> = emptyList(),
+)
+
+data class TecnicoCableadoSummary(
+    val puntosCat5e: Int,
+    val puntosCat6: Int,
+)
+
+data class TecnicoPlantillaPendiente(
+    val ordenId: String,
+    val pedido: String,
+    val codigoCliente: String,
+    val cliente: String,
+    val ymd: String,
 )
 
 data class TecnicoKpis(
@@ -58,9 +83,11 @@ data class TecnicoOrderSummary(
     val isGarantia: Boolean,
     val isFinalizada: Boolean,
     val isLiquidated: Boolean,
+    val plantillaStatus: String,
     val cantMesh: Int,
     val cantFono: Int,
     val cantBox: Int,
+    val motivoCancelacion: String,
     val lat: Double?,
     val lng: Double?,
 )
@@ -83,6 +110,8 @@ data class TecnicoOrderDetail(
     val ordenId: String,
     val cliente: String,
     val codigoCliente: String,
+    val documento: String,
+    val telefono: String,
     val direccion: String,
     val estado: String,
     val tipoTrabajo: String,
@@ -95,9 +124,17 @@ data class TecnicoOrderDetail(
     val isGarantia: Boolean,
     val isFinalizada: Boolean,
     val isLiquidated: Boolean,
+    val plantillaStatus: String,
     val liquidacionEstado: String,
     val liquidadoAt: String?,
     val observacion: String,
+    val cantMesh: Int,
+    val cantFono: Int,
+    val cantBox: Int,
+    val lat: Double?,
+    val lng: Double?,
+    val acta: String,
+    val servicios: List<String>,
     val materiales: List<TecnicoConsumedMaterial>,
     val equipos: List<TecnicoInstalledEquipment>,
 )
@@ -121,6 +158,26 @@ data class TecnicoStockData(
     val cuadrilla: TecnicoCuadrillaSummary,
     val equipos: List<TecnicoStockEquipment>,
     val materiales: List<TecnicoStockMaterial>,
+    val bobinas: List<TecnicoStockBobina> = emptyList(),
+)
+
+data class TecnicoStockBobina(
+    val id: String,
+    val codigo: String,
+    val metrosRestantes: Double,
+    val metrosIniciales: Double,
+    val fDespachoYmd: String = "",
+)
+
+data class TecnicoStockAuditoria(
+    val requiere: Boolean,
+    val estado: String,
+    val fotoPath: String,
+    val fotoURL: String,
+    val actualizadoEn: Long?,
+    val actualizadoPor: String,
+    val marcadoPor: String,
+    val marcadoPorNombre: String,
 )
 
 data class TecnicoStockEquipment(
@@ -128,6 +185,10 @@ data class TecnicoStockEquipment(
     val sn: String,
     val tipo: String,
     val proid: String,
+    val fDespachoYmd: String = "",
+    val guiaDespacho: String = "",
+    val observacion: String = "",
+    val auditoria: TecnicoStockAuditoria? = null,
 )
 
 data class TecnicoStockMaterial(
@@ -155,4 +216,17 @@ data class TecnicoMapItem(
     val fechaProgramadaHm: String,
     val lat: Double,
     val lng: Double,
+)
+
+enum class MapMode { MIS_ORDENES, CUADRILLAS }
+
+data class CuadrillaMapa(
+    val id: String,
+    val nombre: String,
+    val categoria: String,
+    val vehiculo: String,
+    val lat: Double,
+    val lng: Double,
+    val lastLocationAt: Long?,
+    val estadoActual: String = "EN_RUTA", // "EN_RUTA" | "EN_ORDEN"
 )

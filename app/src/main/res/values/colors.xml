@@ -7,4 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="redes_blue">#1F4A7C</color>
+    <color name="redes_night">#0B142D</color>
+    <color name="redes_accent">#4D9DE0</color>
 </resources>

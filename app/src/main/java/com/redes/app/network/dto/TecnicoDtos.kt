@@ -1,5 +1,7 @@
 package com.redes.app.network.dto
 
+import com.redes.app.data.tecnico.CuadrillaMapa
+import com.redes.app.data.tecnico.TecnicoCableadoSummary
 import com.redes.app.data.tecnico.TecnicoConsumedMaterial
 import com.redes.app.data.tecnico.TecnicoCuadrillaSummary
 import com.redes.app.data.tecnico.TecnicoEquipmentSummary
@@ -13,6 +15,9 @@ import com.redes.app.data.tecnico.TecnicoOrderDetail
 import com.redes.app.data.tecnico.TecnicoOrdersData
 import com.redes.app.data.tecnico.TecnicoOrdersUpdateInfo
 import com.redes.app.data.tecnico.TecnicoOrderSummary
+import com.redes.app.data.tecnico.TecnicoPlantillaPendiente
+import com.redes.app.data.tecnico.TecnicoStockAuditoria
+import com.redes.app.data.tecnico.TecnicoStockBobina
 import com.redes.app.data.tecnico.TecnicoStockData
 import com.redes.app.data.tecnico.TecnicoStockEquipment
 import com.redes.app.data.tecnico.TecnicoStockMaterial
@@ -29,6 +34,7 @@ internal fun JSONObject.toTecnicoCuadrillaSummary(): TecnicoCuadrillaSummary {
         coordinadorNombre = optString("coordinadorNombre"),
         gestorUid = optString("gestorUid"),
         gestorNombre = optString("gestorNombre"),
+        gestorWhatsapp = optString("gestorWhatsapp"),
         integrantes = optJSONArray("integrantes").toMembers(),
     )
 }
@@ -36,6 +42,7 @@ internal fun JSONObject.toTecnicoCuadrillaSummary(): TecnicoCuadrillaSummary {
 internal fun JSONObject.toTecnicoHomeData(): TecnicoHomeData {
     val tecnico = optJSONObject("tecnico") ?: JSONObject()
     val kpis = optJSONObject("kpis") ?: JSONObject()
+    val cableadoJson = optJSONObject("cableado") ?: JSONObject()
     return TecnicoHomeData(
         fecha = optString("fecha"),
         tecnicoUid = tecnico.optString("uid"),
@@ -50,7 +57,30 @@ internal fun JSONObject.toTecnicoHomeData(): TecnicoHomeData {
             porcentajeGarantias = kpis.optDouble("porcentajeGarantias", 0.0),
         ),
         equipmentSummary = optJSONArray("equipmentSummary").toEquipmentSummary(),
+        cableado = TecnicoCableadoSummary(
+            puntosCat5e = cableadoJson.optInt("puntosCat5e"),
+            puntosCat6 = cableadoJson.optInt("puntosCat6"),
+        ),
+        plantillasPendientes = optJSONArray("plantillasPendientes").toPlantillasPendientes(),
     )
+}
+
+private fun JSONArray?.toPlantillasPendientes(): List<TecnicoPlantillaPendiente> {
+    if (this == null) return emptyList()
+    return buildList(length()) {
+        for (index in 0 until length()) {
+            val json = optJSONObject(index) ?: continue
+            add(
+                TecnicoPlantillaPendiente(
+                    ordenId = json.optString("ordenId"),
+                    pedido = json.optString("pedido"),
+                    codigoCliente = json.optString("codigoCliente"),
+                    cliente = json.optString("cliente"),
+                    ymd = json.optString("ymd"),
+                )
+            )
+        }
+    }
 }
 
 internal fun JSONObject.toTecnicoOrdersData(): TecnicoOrdersData {
@@ -93,9 +123,11 @@ internal fun JSONArray?.toTecnicoOrderSummaries(): List<TecnicoOrderSummary> {
                     isGarantia = json.optBoolean("isGarantia"),
                     isFinalizada = json.optBoolean("isFinalizada"),
                     isLiquidated = json.optBoolean("isLiquidated"),
+                    plantillaStatus = json.optString("plantillaStatus"),
                     cantMesh = json.optInt("cantMesh"),
                     cantFono = json.optInt("cantFono"),
                     cantBox = json.optInt("cantBox"),
+                    motivoCancelacion = json.optString("motivoCancelacion"),
                     lat = json.optNullableDouble("lat"),
                     lng = json.optNullableDouble("lng"),
                 )
@@ -110,6 +142,8 @@ internal fun JSONObject.toTecnicoOrderDetail(): TecnicoOrderDetail {
         ordenId = optString("ordenId"),
         cliente = optString("cliente"),
         codigoCliente = optString("codigoCliente"),
+        documento = optString("documento"),
+        telefono = optString("telefono"),
         direccion = optString("direccion"),
         estado = optString("estado"),
         tipoTrabajo = optString("tipoTrabajo"),
@@ -122,9 +156,17 @@ internal fun JSONObject.toTecnicoOrderDetail(): TecnicoOrderDetail {
         isGarantia = optBoolean("isGarantia"),
         isFinalizada = optBoolean("isFinalizada"),
         isLiquidated = optBoolean("isLiquidated"),
+        plantillaStatus = optString("plantillaStatus"),
         liquidacionEstado = optString("liquidacionEstado"),
         liquidadoAt = optString("liquidadoAt").ifBlank { null },
         observacion = optString("observacion"),
+        cantMesh = optInt("cantMesh"),
+        cantFono = optInt("cantFono"),
+        cantBox = optInt("cantBox"),
+        lat = optNullableDouble("lat"),
+        lng = optNullableDouble("lng"),
+        acta = optString("acta"),
+        servicios = optJSONArray("servicios").toStringList(),
         materiales = optJSONArray("materiales").toConsumedMaterials(),
         equipos = optJSONArray("equipos").toInstalledEquipments(),
     )
@@ -135,6 +177,7 @@ internal fun JSONObject.toTecnicoStockData(): TecnicoStockData {
         cuadrilla = (optJSONObject("cuadrilla") ?: JSONObject()).toTecnicoCuadrillaSummary(),
         equipos = optJSONArray("equipos").toStockEquipments(),
         materiales = optJSONArray("materiales").toStockMaterials(),
+        bobinas = optJSONArray("bobinas").toStockBobinas(),
     )
 }
 
@@ -201,16 +244,35 @@ private fun JSONArray?.toStockEquipments(): List<TecnicoStockEquipment> {
     return buildList(length()) {
         for (index in 0 until length()) {
             val json = optJSONObject(index) ?: continue
-            add(
-                TecnicoStockEquipment(
-                    id = json.optString("id"),
-                    sn = json.optString("sn"),
-                    tipo = json.optString("tipo"),
-                    proid = json.optString("proid"),
-                )
-            )
+            add(json.toTecnicoStockEquipment())
         }
     }
+}
+
+internal fun JSONObject.toTecnicoStockEquipment(): TecnicoStockEquipment {
+    return TecnicoStockEquipment(
+        id = optString("id"),
+        sn = optString("sn"),
+        tipo = optString("tipo"),
+        proid = optString("proid"),
+        fDespachoYmd = optString("fDespachoYmd").ifBlank { optString("f_despachoYmd") },
+        guiaDespacho = optString("guiaDespacho").ifBlank { optString("guia_despacho") },
+        observacion = optString("observacion"),
+        auditoria = optJSONObject("auditoria")?.toTecnicoStockAuditoria(),
+    )
+}
+
+private fun JSONObject.toTecnicoStockAuditoria(): TecnicoStockAuditoria {
+    return TecnicoStockAuditoria(
+        requiere = optBoolean("requiere"),
+        estado = optString("estado"),
+        fotoPath = optString("fotoPath"),
+        fotoURL = optString("fotoURL"),
+        actualizadoEn = optTimestampMillis("actualizadoEn"),
+        actualizadoPor = optString("actualizadoPor"),
+        marcadoPor = optString("marcadoPor"),
+        marcadoPorNombre = optString("marcadoPorNombre"),
+    )
 }
 
 private fun JSONArray?.toStockMaterials(): List<TecnicoStockMaterial> {
@@ -225,6 +287,51 @@ private fun JSONArray?.toStockMaterials(): List<TecnicoStockMaterial> {
                     unidadTipo = json.optString("unidadTipo"),
                     stockUnd = json.optDouble("stockUnd", 0.0),
                     stockCm = json.optDouble("stockCm", 0.0),
+                )
+            )
+        }
+    }
+}
+
+private fun JSONArray?.toStockBobinas(): List<TecnicoStockBobina> {
+    if (this == null) return emptyList()
+    return buildList(length()) {
+        for (index in 0 until length()) {
+            val json = optJSONObject(index) ?: continue
+            add(
+                TecnicoStockBobina(
+                    id = json.optString("id"),
+                    codigo = json.optString("codigo").ifBlank { json.optString("id") },
+                    metrosRestantes = json.optDouble("metrosRestantes", 0.0),
+                    metrosIniciales = json.optDouble("metrosIniciales", 0.0),
+                    fDespachoYmd = json.optString("fDespachoYmd").ifBlank { json.optString("f_despachoYmd") },
+                )
+            )
+        }
+    }
+}
+
+internal fun JSONObject.toCuadrillasMapa(): List<CuadrillaMapa> {
+    return optJSONArray("items").toCuadrillasMapaList()
+}
+
+private fun JSONArray?.toCuadrillasMapaList(): List<CuadrillaMapa> {
+    if (this == null) return emptyList()
+    return buildList(length()) {
+        for (index in 0 until length()) {
+            val json = optJSONObject(index) ?: continue
+            val lat = json.optNullableDouble("lat") ?: continue
+            val lng = json.optNullableDouble("lng") ?: continue
+            add(
+                CuadrillaMapa(
+                    id = json.optString("id"),
+                    nombre = json.optString("nombre"),
+                    categoria = json.optString("categoria"),
+                    vehiculo = json.optString("vehiculo"),
+                    lat = lat,
+                    lng = lng,
+                    lastLocationAt = json.optTimestampMillis("lastLocationAt"),
+                    estadoActual = json.optString("estadoActual").ifBlank { "EN_RUTA" },
                 )
             )
         }
@@ -256,6 +363,16 @@ private fun JSONArray?.toMapItems(): List<TecnicoMapItem> {
     }
 }
 
+private fun JSONArray?.toStringList(): List<String> {
+    if (this == null) return emptyList()
+    return buildList(length()) {
+        for (index in 0 until length()) {
+            val value = optString(index).trim()
+            if (value.isNotBlank()) add(value)
+        }
+    }
+}
+
 private fun JSONArray?.toEquipmentSummary(): List<TecnicoEquipmentSummary> {
     if (this == null) return emptyList()
     return buildList(length()) {
@@ -271,11 +388,22 @@ private fun JSONArray?.toEquipmentSummary(): List<TecnicoEquipmentSummary> {
     }
 }
 
-private fun JSONObject.optNullableDouble(name: String): Double? {
+internal fun JSONObject.optNullableDouble(name: String): Double? {
     if (isNull(name)) return null
     return when (val value = opt(name)) {
         is Number -> value.toDouble()
         is String -> value.toDoubleOrNull()
+        else -> null
+    }
+}
+
+internal fun JSONObject.optTimestampMillis(name: String): Long? {
+    if (isNull(name)) return null
+    return when (val value = opt(name)) {
+        is com.google.firebase.Timestamp -> value.toDate().time
+        is java.util.Date -> value.time
+        is Number -> value.toLong()
+        is String -> value.toLongOrNull()
         else -> null
     }
 }

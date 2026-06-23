@@ -1,14 +1,14 @@
 <resources>
     <string name="app_name">REDES</string>
-    <string name="login_title">Acceso REDES</string>
-    <string name="login_subtitle">Ingresa con tus credenciales para acceder a la red operativa.</string>
+    <string name="login_title">Bienvenidos a REDES M&amp;D</string>
+    <string name="login_subtitle">Ingresa tus credenciales para continuar.</string>
     <string name="email_label">Correo</string>
     <string name="password_label">Contrasena</string>
     <string name="login_button">Iniciar sesion</string>
     <string name="login_loading">Ingresando...</string>
     <string name="login_email_hint">Usa tu correo corporativo.</string>
-    <string name="login_password_hint">Minimo 6 caracteres.</string>
-    <string name="login_footer">REDES M&amp;D | acceso seguro</string>
+    <string name="login_password_hint">Minimo 8 caracteres.</string>
+    <string name="login_footer">2026 REDES M&amp;D | Desarrollado Por Arturo Pozo</string>
     <string name="login_status_idle">Listo para validar</string>
     <string name="login_status_loading">Conectando</string>
     <string name="login_status_error">Error de acceso</string>

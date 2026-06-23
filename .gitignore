@@ -13,3 +13,10 @@
 .externalNativeBuild
 .cxx
 local.properties
+# Android signing
+*.jks
+*.keystore
+
+# Claude Code — solo configuración local personal
+.claude/settings.local.json
+CLAUDE.md
