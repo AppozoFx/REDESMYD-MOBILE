@@ -5,6 +5,7 @@ interface AlmacenRepository {
     suspend fun fetchLiquidacion(ym: String): Result<AlmacenLiquidacionData>
     suspend fun fetchInstalaciones(ym: String): Result<List<AlmacenInstalacion>>
     suspend fun fetchCuadrillasMapa(): Result<List<com.redes.app.data.tecnico.CuadrillaMapa>>
+    suspend fun fetchMapa(ymd: String): Result<List<com.redes.app.data.coordinador.CoordinadorMapItem>>
     suspend fun fetchPreliquidacion(ordenId: String): Result<AlmacenPreliquidacion>
     suspend fun lookupSn(sn: String, cuadrillaId: String): Result<AlmacenSnLookup>
     suspend fun liquidarOrden(request: AlmacenLiquidarRequest): Result<Unit>

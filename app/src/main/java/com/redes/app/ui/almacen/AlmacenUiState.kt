@@ -1,6 +1,7 @@
 package com.redes.app.ui.almacen
 
 import com.redes.app.data.almacen.*
+import com.redes.app.data.coordinador.CoordinadorMapItem
 import com.redes.app.data.tecnico.CuadrillaMapa
 import java.time.ZonedDateTime
 import java.time.ZoneId
@@ -57,8 +58,16 @@ data class AlmacenUiState(
     val cuadrillasMapa: List<CuadrillaMapa> = emptyList(),
     val isCuadrillasMapaLoading: Boolean = false,
 
+    // Mapa órdenes
+    val selectedYmd: String = todayAlmacenYmd(),
+    val mapaItems: List<CoordinadorMapItem> = emptyList(),
+    val isMapaItemsLoading: Boolean = false,
+
     val isRefreshing: Boolean = false,
 )
 
 fun todayAlmacenYm(): String = ZonedDateTime.now(ZoneId.of("America/Lima"))
     .format(DateTimeFormatter.ofPattern("yyyy-MM"))
+
+fun todayAlmacenYmd(): String = ZonedDateTime.now(ZoneId.of("America/Lima"))
+    .format(DateTimeFormatter.ISO_LOCAL_DATE)

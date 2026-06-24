@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.redes.app.data.auth.AuthRepository
-import com.redes.app.data.coordinador.CoordinadorLiquidarRequest
 import com.redes.app.data.coordinador.CoordinadorRepository
 import com.redes.app.data.session.SessionRepository
 import com.redes.app.data.tecnico.TecnicoRepository
@@ -45,10 +44,6 @@ class CoordinadorViewModel(
     fun refreshAll() {
         if (!_uiState.value.isEnabled) return
         _uiState.update { it.copy(isRefreshing = true, errorMessage = null) }
-        when (_uiState.value.selectedTab) {
-            CoordinadorTab.LIQUIDACION -> { refreshLiquidacion(); return }
-            else -> {}
-        }
         val ym = _uiState.value.selectedYm
         val ymd = _uiState.value.selectedYmd
         viewModelScope.launch {
@@ -103,7 +98,6 @@ class CoordinadorViewModel(
         when (tab) {
             CoordinadorTab.INICIO -> if (_uiState.value.resumen == null) refreshResumen()
             CoordinadorTab.CUADRILLAS -> if (_uiState.value.cuadrillaData == null) refreshCuadrillas()
-            CoordinadorTab.LIQUIDACION -> if (_uiState.value.liquidacion == null) refreshLiquidacion()
             CoordinadorTab.ALMACEN -> {
                 if (_uiState.value.stock.isEmpty()) refreshStock()
             }
@@ -182,113 +176,6 @@ class CoordinadorViewModel(
         }
     }
 
-    fun toggleLiquidacionExpanded(id: String) {
-        val isExpanding = _uiState.value.expandedLiquidacionId != id
-        _uiState.update {
-            it.copy(expandedLiquidacionId = if (isExpanding) id else null, errorMessage = null)
-        }
-        if (isExpanding && !_uiState.value.preliquidaciones.containsKey(id)) {
-            fetchLiquidacionPreliq(id)
-        }
-    }
-
-    fun fetchLiquidacionPreliq(ordenId: String) {
-        if (!_uiState.value.isEnabled) return
-        _uiState.update { it.copy(isPreliqLoadingId = ordenId) }
-        viewModelScope.launch {
-            val result = coordinadorRepository.fetchPreliquidacion(ordenId)
-            result.getOrNull()?.let { preliq ->
-                if (preliq.found) {
-                    _uiState.update { state ->
-                        val existing = state.liquidacionForms[ordenId] ?: CoordinadorLiquidacionForm()
-                        val updated = existing.copy(
-                            snOnt = existing.snOnt.ifBlank { preliq.snOnt },
-                            snMeshes = existing.snMeshes.ifEmpty { preliq.snMeshes },
-                            snBoxes = existing.snBoxes.ifEmpty { preliq.snBoxes },
-                            snFono = existing.snFono.ifBlank { preliq.snFono },
-                            rotuloNapCto = existing.rotuloNapCto.ifBlank { preliq.rotuloNapCto },
-                        )
-                        state.copy(
-                            preliquidaciones = state.preliquidaciones + (ordenId to preliq),
-                            liquidacionForms = state.liquidacionForms + (ordenId to updated),
-                            isPreliqLoadingId = null,
-                        )
-                    }
-                } else {
-                    _uiState.update { it.copy(isPreliqLoadingId = null) }
-                }
-            } ?: _uiState.update { it.copy(isPreliqLoadingId = null) }
-            Log.d(TAG, "Preliquidacion coord $ordenId: ${result.getOrNull()?.found}")
-        }
-    }
-
-    fun updateLiquidacionForm(ordenId: String, update: CoordinadorLiquidacionForm.() -> CoordinadorLiquidacionForm) {
-        _uiState.update { state ->
-            val current = state.liquidacionForms[ordenId] ?: CoordinadorLiquidacionForm()
-            state.copy(liquidacionForms = state.liquidacionForms + (ordenId to current.update()))
-        }
-    }
-
-    fun liquidarOrden(ordenId: String) {
-        if (!_uiState.value.isEnabled) return
-        val form = _uiState.value.liquidacionForms[ordenId] ?: CoordinadorLiquidacionForm()
-        _uiState.update { state ->
-            state.copy(liquidacionForms = state.liquidacionForms + (ordenId to form.copy(isSubmitting = true, submitError = null)))
-        }
-        viewModelScope.launch {
-            val request = CoordinadorLiquidarRequest(
-                ordenId = ordenId,
-                snOnt = form.snOnt.trim().uppercase(),
-                snMeshes = form.snMeshes.map { it.trim().uppercase() }.filter { it.isNotBlank() },
-                snBoxes = form.snBoxes.map { it.trim().uppercase() }.filter { it.isNotBlank() },
-                snFono = form.snFono.trim().uppercase(),
-                rotuloNapCto = form.rotuloNapCto.trim(),
-                planGamer = form.planGamer,
-                kitWifiPro = form.kitWifiPro,
-                servicioCableadoMesh = form.servicioCableadoMesh,
-                cat5e = form.cat5e,
-                cat6 = form.cat6,
-                observacion = form.observacion.trim(),
-            )
-            val result = coordinadorRepository.liquidarOrden(request)
-            if (result.isSuccess) {
-                _uiState.update { state ->
-                    val updatedItems = state.liquidacion?.items?.map {
-                        if (it.id == ordenId) it.copy(liquidado = true, correccionPendiente = false) else it
-                    } ?: emptyList()
-                    val updatedLiq = state.liquidacion?.let { liq ->
-                        val nuevasLiquidadas = updatedItems.count { it.liquidado }
-                        liq.copy(
-                            items = updatedItems,
-                            kpi = liq.kpi.copy(
-                                liquidadas = nuevasLiquidadas,
-                                pendientes = liq.kpi.finalizadas - nuevasLiquidadas,
-                            )
-                        )
-                    }
-                    val updatedForm = (state.liquidacionForms[ordenId] ?: CoordinadorLiquidacionForm()).copy(
-                        isSubmitting = false, submitSuccess = true, submitError = null,
-                    )
-                    state.copy(
-                        liquidacion = updatedLiq,
-                        liquidacionForms = state.liquidacionForms + (ordenId to updatedForm),
-                        expandedLiquidacionId = null,
-                    )
-                }
-                Log.d(TAG, "Liquidación coord OK: $ordenId")
-            } else {
-                val msg = result.exceptionOrNull()?.message ?: "Error al liquidar"
-                _uiState.update { state ->
-                    val updatedForm = (state.liquidacionForms[ordenId] ?: CoordinadorLiquidacionForm()).copy(
-                        isSubmitting = false, submitError = msg,
-                    )
-                    state.copy(liquidacionForms = state.liquidacionForms + (ordenId to updatedForm))
-                }
-                Log.e(TAG, "Liquidación coord error $ordenId: $msg")
-            }
-        }
-    }
-
     fun previousMonth() {
         val ym = changeMonth(_uiState.value.selectedYm, -1)
         _uiState.update {
@@ -303,11 +190,7 @@ class CoordinadorViewModel(
                 preliquidaciones = emptyMap(),
             )
         }
-        when (_uiState.value.selectedTab) {
-            CoordinadorTab.INICIO -> refreshResumen()
-            CoordinadorTab.LIQUIDACION -> refreshLiquidacion()
-            else -> refreshResumen()
-        }
+        refreshResumen()
     }
 
     fun nextMonth() {
@@ -324,11 +207,7 @@ class CoordinadorViewModel(
                 preliquidaciones = emptyMap(),
             )
         }
-        when (_uiState.value.selectedTab) {
-            CoordinadorTab.INICIO -> refreshResumen()
-            CoordinadorTab.LIQUIDACION -> refreshLiquidacion()
-            else -> refreshResumen()
-        }
+        refreshResumen()
     }
 
     fun previousDay() {
@@ -352,22 +231,6 @@ class CoordinadorViewModel(
         if (!_uiState.value.isEnabled) return
         _uiState.update { it.copy(selectedYmd = ymd, cuadrillaData = null) }
         refreshCuadrillas()
-    }
-
-    private fun refreshLiquidacion() {
-        if (!_uiState.value.isEnabled) return
-        viewModelScope.launch {
-            _uiState.update { it.copy(isLiquidacionLoading = true) }
-            val result = coordinadorRepository.fetchLiquidacion(_uiState.value.selectedYm)
-            _uiState.update {
-                it.copy(
-                    isLiquidacionLoading = false,
-                    isRefreshing = false,
-                    liquidacion = result.getOrNull() ?: it.liquidacion,
-                    errorMessage = result.exceptionOrNull()?.localizedMessage,
-                )
-            }
-        }
     }
 
     private fun refreshResumen() {

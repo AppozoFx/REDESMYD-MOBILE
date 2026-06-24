@@ -422,6 +422,11 @@ class RedesApiClient(
         Log.d(tag, "GET ${request.url}"); return executeJson(request) { json -> json.toCuadrillasMapa() }
     }
 
+    suspend fun fetchAlmacenMapa(ymd: String): List<CoordinadorMapItem> {
+        val request = Request.Builder().url("$normalizedBaseUrl${MobileEndpoints.ALMACEN_MAPA}?ymd=$ymd").get().header("X-Mobile-Role", "ALMACEN").build()
+        Log.d(tag, "GET ${request.url}"); return executeJson(request) { it.toCoordinadorMapItems() }
+    }
+
     suspend fun fetchSupervisorHome(): com.redes.app.data.supervisor.SupervisorHomeData {
         val request = Request.Builder()
             .url("$normalizedBaseUrl${MobileEndpoints.SUPERVISOR_HOME}")

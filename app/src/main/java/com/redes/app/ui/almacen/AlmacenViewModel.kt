@@ -45,7 +45,7 @@ class AlmacenViewModel(
             AlmacenTab.STOCK -> refreshStock()
             AlmacenTab.LIQUIDACION -> refreshLiquidacion()
             AlmacenTab.INSTALACIONES -> refreshInstalaciones()
-            AlmacenTab.MAPA -> refreshCuadrillasMapa()
+            AlmacenTab.MAPA -> { refreshCuadrillasMapa(); refreshMapaItems() }
         }
         viewModelScope.launch { _uiState.update { it.copy(isRefreshing = false) } }
     }
@@ -56,7 +56,10 @@ class AlmacenViewModel(
             AlmacenTab.STOCK -> if (_uiState.value.stock.isEmpty()) refreshStock()
             AlmacenTab.LIQUIDACION -> if (_uiState.value.liquidacion == null) refreshLiquidacion()
             AlmacenTab.INSTALACIONES -> if (_uiState.value.instalaciones.isEmpty()) refreshInstalaciones()
-            AlmacenTab.MAPA -> if (_uiState.value.cuadrillasMapa.isEmpty()) refreshCuadrillasMapa()
+            AlmacenTab.MAPA -> {
+                if (_uiState.value.cuadrillasMapa.isEmpty()) refreshCuadrillasMapa()
+                if (_uiState.value.mapaItems.isEmpty()) refreshMapaItems()
+            }
         }
     }
 
@@ -285,6 +288,20 @@ class AlmacenViewModel(
                     isCuadrillasMapaLoading = false,
                     isRefreshing = false,
                     cuadrillasMapa = result.getOrNull() ?: it.cuadrillasMapa,
+                )
+            }
+        }
+    }
+
+    private fun refreshMapaItems() {
+        if (!_uiState.value.isEnabled) return
+        viewModelScope.launch {
+            _uiState.update { it.copy(isMapaItemsLoading = true) }
+            val result = almacenRepository.fetchMapa(_uiState.value.selectedYmd)
+            _uiState.update {
+                it.copy(
+                    isMapaItemsLoading = false,
+                    mapaItems = result.getOrNull() ?: it.mapaItems,
                 )
             }
         }

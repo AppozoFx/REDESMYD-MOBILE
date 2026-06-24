@@ -43,6 +43,7 @@ object MobileEndpoints {
     const val ALMACEN_LIQUIDACION_LIQUIDAR = "/api/mobile/almacen/liquidacion/liquidar"
     const val ALMACEN_INSTALACIONES = "/api/mobile/almacen/instalaciones"
     const val ALMACEN_CUADRILLAS_MAPA = "/api/mobile/tecnico/cuadrillas-mapa"
+    const val ALMACEN_MAPA = "/api/mobile/almacen/mapa"
 
     fun comunicadoSeen(id: String): String = "/api/mobile/comunicados/$id/seen"
     fun tecnicoOrderDetail(id: String): String = "/api/mobile/tecnico/ordenes/$id"

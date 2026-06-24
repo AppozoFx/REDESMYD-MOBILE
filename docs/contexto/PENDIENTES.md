@@ -1,6 +1,6 @@
 # Pendientes de Contexto - REDES-MOBILE
 
-Actualizado: 2026-06-22.
+Actualizado: 2026-06-23.
 
 Siguiente unidad recomendada: **Pantallas por rol y UI comun/tema**.
 
@@ -93,6 +93,12 @@ Siguiente unidad recomendada: **Pantallas por rol y UI comun/tema**.
 - Actualizar `TecnicoViewModel`, `TecnicoShellScreen`, `NotificationsScreen`, `data\tecnico` y `data\alertas` por alertas/notificaciones y relacion con cierre de ruta/tracking.
 - Profundizar modelos/DTOs contra backend REDES, especialmente coordinador, supervisor y tecnico.
 - Mantener en revision los cambios de Gradle, manifest, recursos y configs solo como contexto de build/permisos; no modificarlos desde RedesContext.
+
+## Pendientes Detectados En Revision Incremental 2026-06-23
+
+- REDES-MOBILE incremento `app/build.gradle.kts` a `versionCode 11` / `versionName 1.0.10`; validar publicacion o rollout en Play Console si corresponde.
+- Ignorar `app\release\app-release.aab` como output binario generado salvo solicitud explicita de revision de empaquetado.
+- Mantener como siguiente unidad `Pantallas por rol y UI comun/tema`.
 
 ## Pendientes Detectados En Deep Dive Force Update
 

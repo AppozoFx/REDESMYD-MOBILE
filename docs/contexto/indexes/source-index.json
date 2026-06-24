@@ -1,6 +1,6 @@
 ﻿{
     "project":  "REDES-MOBILE",
-    "scan_date":  "2026-06-22",
+    "scan_date":  "2026-06-23",
     "phase":  "3-incremental-maintenance",
     "coverage":  "partial-changed-units",
     "root":  "C:\\Proyectos\\REDES-MOBILE",
@@ -858,5 +858,30 @@
                                                                         "Confirmar definicion final del tab LIQUIDACION."
                                                                     ],
                                                    "next_recommended_unit":  "Pantallas por rol y UI comun/tema"
-                                               }
+                                               },
+    "incremental_refresh_2026_06_23_version_mobile":  {
+                                                           "status":  "documented",
+                                                           "files_read":  [
+                                                                              "app/build.gradle.kts"
+                                                                          ],
+                                                           "excluded_changed_files":  [
+                                                                                         "app/release/app-release.aab"
+                                                                                     ],
+                                                           "documentation_updates":  [
+                                                                                         "docs/contexto/INDEX.md",
+                                                                                         "docs/contexto/PENDIENTES.md",
+                                                                                         "docs/contexto/CHANGELOG-CONTEXTO.md",
+                                                                                         "docs/contexto/indexes/source-index.json"
+                                                                                     ],
+                                                           "findings":  [
+                                                                            "REDES no muestra cambios pendientes.",
+                                                                            "REDES-MOBILE incremento versionCode a 11 y versionName a 1.0.10.",
+                                                                            "No se detectaron nuevas rutas, pantallas, servicios, repositorios, modelos ni funciones.",
+                                                                            "app/release/app-release.aab es output binario generado y queda excluido de contexto funcional."
+                                                                        ],
+                                                           "review_items":  [
+                                                                                 "Validar publicacion o rollout de la version 1.0.10 en Play Console si corresponde."
+                                                                             ],
+                                                           "next_recommended_unit":  "Pantallas por rol y UI comun/tema"
+                                                       }
 }

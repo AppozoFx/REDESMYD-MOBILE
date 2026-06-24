@@ -1,8 +1,8 @@
 # Indice de Contexto - REDES-MOBILE
 
-Actualizado: 2026-06-22.
+Actualizado: 2026-06-23.
 
-Estado actual: revision incremental diaria 2026-06-22. REDES no muestra cambios pendientes en git. REDES-MOBILE mantiene cambios funcionales amplios y se documento la nueva unidad `ALMACEN` como shell/repositorio en revision. Se mantienen pendientes pantallas/UI, permisos en dispositivo, validacion de deploy de rules y decisiones de contrato.
+Estado actual: revision incremental diaria 2026-06-23. REDES no muestra cambios pendientes en git. REDES-MOBILE muestra solo incremento de version en `app/build.gradle.kts` (`versionCode 11`, `versionName 1.0.10`) y un AAB generado en `app/release`. No se detectaron rutas, pantallas, servicios, repositorios, modelos ni funciones nuevas.
 
 ## Estado General
 
@@ -30,6 +30,14 @@ Estado actual: revision incremental diaria 2026-06-22. REDES no muestra cambios 
 1. Pantallas por rol y UI comun/tema.
 2. Validacion en dispositivo de permisos/tracking/notificaciones.
 3. Contratos/pruebas de repositorios y DTOs.
+
+## Revision Incremental 2026-06-23
+
+- REDES: `git status` y `git diff --name-only` sin cambios pendientes.
+- REDES-MOBILE: cambio acotado en `app/build.gradle.kts` para publicar `versionCode 11` / `versionName 1.0.10`; `app/release/app-release.aab` tratado como output binario generado y excluido de documentacion funcional.
+- Actualizados `INDEX.md`, `PENDIENTES.md`, `CHANGELOG-CONTEXTO.md` e `indexes\source-index.json`.
+- No se detectaron nuevas carpetas, rutas, pantallas, servicios, repositorios, modelos ni funciones con impacto de contexto.
+- Siguiente unidad recomendada: `Pantallas por rol y UI comun/tema`.
 
 ## Revision Incremental 2026-06-22
 
@@ -85,7 +93,7 @@ Estado actual: revision incremental diaria 2026-06-22. REDES no muestra cambios 
 ## Evidencia De Manifests
 
 - `settings.gradle.kts` declara proyecto `REDES` con modulo `:app`.
-- `app/build.gradle.kts` declara namespace `com.redes.app`, applicationId `com.redesmyd.mobile`, minSdk 26, target/compile SDK 36, version `1.0.4`.
+- `app/build.gradle.kts` declara namespace `com.redes.app`, applicationId `com.redesmyd.mobile`, minSdk 26, target/compile SDK 36, version `1.0.10` (`versionCode 11`).
 - Dependencias: Compose, Navigation Compose, Lifecycle ViewModel, DataStore, OkHttp, Firebase Auth/Firestore/Storage, Play Services Location y Maps Compose.
 - `AndroidManifest.xml` declara permisos de internet, ubicacion fina/gruesa, foreground service location y notificaciones.
 - Manifest registra `REDESApplication`, `MainActivity`, `LocationTrackingService` y `FileProvider`.

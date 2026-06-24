@@ -1,5 +1,6 @@
 package com.redes.app.data.almacen
 
+import com.redes.app.data.coordinador.CoordinadorMapItem
 import com.redes.app.data.tecnico.CuadrillaMapa
 import com.redes.app.network.RedesApiClient
 import com.redes.app.network.RedesApiException
@@ -17,6 +18,8 @@ class RemoteAlmacenRepository(
     override suspend fun fetchInstalaciones(ym: String): Result<List<AlmacenInstalacion>> = call { apiClient.fetchAlmacenInstalaciones(ym) }
 
     override suspend fun fetchCuadrillasMapa(): Result<List<CuadrillaMapa>> = call { apiClient.fetchAlmacenCuadrillasMapa() }
+
+    override suspend fun fetchMapa(ymd: String): Result<List<CoordinadorMapItem>> = call { apiClient.fetchAlmacenMapa(ymd) }
 
     override suspend fun fetchPreliquidacion(ordenId: String): Result<AlmacenPreliquidacion> = call { apiClient.fetchAlmacenPreliquidacion(ordenId) }
 

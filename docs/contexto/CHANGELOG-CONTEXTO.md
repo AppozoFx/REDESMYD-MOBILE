@@ -1,5 +1,16 @@
 # Changelog de Contexto - REDES-MOBILE
 
+## 2026-06-23 - Revision incremental diaria: version mobile
+
+- Revisados `git status` y `git diff --name-only` de REDES y REDES-MOBILE.
+- REDES no mostro cambios pendientes.
+- REDES-MOBILE cambio `app/build.gradle.kts` de `versionCode 10` / `versionName 1.0.9` a `versionCode 11` / `versionName 1.0.10`.
+- `app/release/app-release.aab` se trato como output binario generado y no se documento como fuente funcional.
+- Actualizados `INDEX.md`, `PENDIENTES.md` e `indexes/source-index.json`.
+- No se detectaron nuevas carpetas, rutas, pantallas, servicios, repositorios, modelos ni funciones con impacto de contexto.
+- Siguiente unidad recomendada: pantallas por rol y UI comun/tema.
+- No se modifico codigo fuente, Gradle, configs, Firebase rules, package files, lockfiles, credenciales ni binarios.
+
 ## 2026-06-22 - Revision incremental diaria: unidad ALMACEN
 
 - Revisados `git status` y `git diff --name-only` de REDES y REDES-MOBILE.

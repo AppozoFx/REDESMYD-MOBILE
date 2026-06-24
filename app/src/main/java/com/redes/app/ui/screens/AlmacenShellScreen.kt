@@ -32,7 +32,9 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.maps.android.compose.*
+import androidx.compose.ui.platform.LocalFocusManager
 import com.redes.app.data.almacen.*
+import com.redes.app.data.coordinador.CoordinadorMapItem
 import com.redes.app.data.tecnico.CuadrillaMapa
 import com.redes.app.ui.almacen.AlmacenTab
 import com.redes.app.ui.almacen.AlmacenUiState
@@ -872,57 +874,172 @@ private fun AlmacenMapaTab(uiState: AlmacenUiState, modifier: Modifier = Modifie
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(LatLng(-12.046374, -77.042793), 11f)
     }
+    val focusManager = LocalFocusManager.current
+
+    val mapItems = uiState.mapaItems
     val cuadrillasMapa = uiState.cuadrillasMapa
 
-    LaunchedEffect(cuadrillasMapa) {
-        if (cuadrillasMapa.size >= 2) {
+    var filtroCuadrilla by remember { mutableStateOf("") }
+    var filtroEstado by remember { mutableStateOf("") }
+    val hayFiltro = filtroCuadrilla.isNotBlank() || filtroEstado.isNotBlank()
+
+    val filteredMapItems = remember(mapItems, filtroCuadrilla, filtroEstado) {
+        mapItems
+            .let { list -> if (filtroCuadrilla.isBlank()) list else list.filter { it.cuadrillaNombre.contains(filtroCuadrilla.trim(), ignoreCase = true) } }
+            .let { list ->
+                when (filtroEstado) {
+                    "INICIADA"   -> list.filter { it.estado.uppercase().let { e -> e.contains("INICIA") || e == "EN CAMINO" } }
+                    "FINALIZADA" -> list.filter { it.estado.uppercase().contains("FINAL") }
+                    "AGENDADA"   -> list.filter { it.estado.uppercase() == "AGENDADA" }
+                    else -> list
+                }
+            }
+    }
+
+    LaunchedEffect(filteredMapItems) {
+        if (hayFiltro && filteredMapItems.isNotEmpty()) {
+            if (filteredMapItems.size == 1) {
+                cameraPositionState.animate(CameraUpdateFactory.newLatLngZoom(LatLng(filteredMapItems[0].lat, filteredMapItems[0].lng), 15f))
+            } else {
+                val bounds = LatLngBounds.builder()
+                filteredMapItems.forEach { bounds.include(LatLng(it.lat, it.lng)) }
+                runCatching { cameraPositionState.animate(CameraUpdateFactory.newLatLngBounds(bounds.build(), 80), durationMs = 700) }
+            }
+        }
+    }
+
+    LaunchedEffect(mapItems) {
+        if (!hayFiltro && mapItems.size >= 2) {
             val bounds = LatLngBounds.builder()
-            cuadrillasMapa.forEach { bounds.include(LatLng(it.lat, it.lng)) }
+            mapItems.forEach { bounds.include(LatLng(it.lat, it.lng)) }
             runCatching { cameraPositionState.animate(CameraUpdateFactory.newLatLngBounds(bounds.build(), 80), durationMs = 700) }
         }
     }
 
+    var selectedOrder by remember { mutableStateOf<CoordinadorMapItem?>(null) }
     var selectedCuad by remember { mutableStateOf<CuadrillaMapa?>(null) }
 
-    Box(modifier = modifier.fillMaxSize()) {
-        GoogleMap(
-            modifier = Modifier.fillMaxSize(),
-            cameraPositionState = cameraPositionState,
-            properties = MapProperties(isMyLocationEnabled = locationGranted),
-            uiSettings = MapUiSettings(myLocationButtonEnabled = locationGranted, zoomControlsEnabled = false),
-            onMapClick = { selectedCuad = null },
-        ) {
-            cuadrillasMapa.forEach { cuad ->
-                key("cuad-${cuad.id}") {
-                    MarkerComposable(
-                        keys = arrayOf(cuad.estadoActual),
-                        state = rememberMarkerState(position = LatLng(cuad.lat, cuad.lng)),
-                        anchor = androidx.compose.ui.geometry.Offset(0.5f, 0.5f),
-                        onClick = { selectedCuad = cuad; true },
-                    ) {
-                        CuadrillaMarkerIcon(cuad.estadoActual)
+    Column(modifier = modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            OutlinedTextField(
+                value = filtroCuadrilla,
+                onValueChange = { filtroCuadrilla = it },
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text("Filtrar órdenes por cuadrilla", style = MaterialTheme.typography.labelSmall) },
+                leadingIcon = { Icon(Icons.Outlined.Search, null, modifier = Modifier.size(16.dp)) },
+                trailingIcon = if (filtroCuadrilla.isNotBlank()) {
+                    { IconButton(onClick = { filtroCuadrilla = "" }) { Icon(Icons.Outlined.Close, null, modifier = Modifier.size(14.dp)) } }
+                } else null,
+                singleLine = true,
+                textStyle = MaterialTheme.typography.labelSmall,
+            )
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                listOf("AGENDADA" to "Agendada", "INICIADA" to "Iniciada", "FINALIZADA" to "Finalizada").forEach { (key, label) ->
+                    FilterChip(
+                        selected = filtroEstado == key,
+                        onClick = { filtroEstado = if (filtroEstado == key) "" else key },
+                        label = { Text(label, style = MaterialTheme.typography.labelSmall) },
+                        leadingIcon = if (filtroEstado == key) { { Icon(Icons.Outlined.Check, null, modifier = Modifier.size(14.dp)) } } else null,
+                    )
+                }
+                if (hayFiltro) {
+                    TextButton(onClick = { filtroCuadrilla = ""; filtroEstado = "" }, contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)) {
+                        Text("Limpiar", style = MaterialTheme.typography.labelSmall)
                     }
                 }
             }
         }
 
-        selectedCuad?.let { cuad ->
-            MapCuadrillaPopup(cuadrilla = cuad, onDismiss = { selectedCuad = null }, modifier = Modifier.align(Alignment.BottomCenter))
-        }
-
-        if (!uiState.isCuadrillasMapaLoading && cuadrillasMapa.isEmpty()) {
-            Column(
-                modifier = Modifier.align(Alignment.Center).padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+        Box(modifier = Modifier.weight(1f)) {
+            GoogleMap(
+                modifier = Modifier.fillMaxSize(),
+                cameraPositionState = cameraPositionState,
+                properties = MapProperties(isMyLocationEnabled = locationGranted),
+                uiSettings = MapUiSettings(myLocationButtonEnabled = locationGranted, zoomControlsEnabled = false),
+                onMapClick = { focusManager.clearFocus(); selectedOrder = null; selectedCuad = null },
             ) {
-                Icon(Icons.Outlined.LocationOff, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                Text("Sin cuadrillas con ubicación activa.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center)
+                filteredMapItems.forEach { item ->
+                    key(item.id) {
+                        MarkerComposable(
+                            keys = arrayOf(item.estado),
+                            state = rememberMarkerState(position = LatLng(item.lat, item.lng)),
+                            anchor = androidx.compose.ui.geometry.Offset(0.5f, 0.5f),
+                            onClick = { selectedOrder = item; selectedCuad = null; true },
+                        ) {
+                            OrderMarkerIcon(item.estado)
+                        }
+                    }
+                }
+                cuadrillasMapa.forEach { cuad ->
+                    key("cuad-${cuad.id}") {
+                        MarkerComposable(
+                            keys = arrayOf(cuad.estadoActual),
+                            state = rememberMarkerState(position = LatLng(cuad.lat, cuad.lng)),
+                            anchor = androidx.compose.ui.geometry.Offset(0.5f, 0.5f),
+                            onClick = { selectedCuad = cuad; selectedOrder = null; true },
+                        ) {
+                            CuadrillaMarkerIcon(cuad.estadoActual)
+                        }
+                    }
+                }
+            }
+
+            selectedOrder?.let { order ->
+                AlmacenOrderPopup(item = order, onDismiss = { selectedOrder = null }, modifier = Modifier.align(Alignment.BottomCenter))
+            }
+            selectedCuad?.let { cuad ->
+                MapCuadrillaPopup(cuadrilla = cuad, onDismiss = { selectedCuad = null }, modifier = Modifier.align(Alignment.BottomCenter))
+            }
+
+            val isLoading = uiState.isCuadrillasMapaLoading || uiState.isMapaItemsLoading
+            if (!isLoading && filteredMapItems.isEmpty() && cuadrillasMapa.isEmpty()) {
+                Column(
+                    modifier = Modifier.align(Alignment.Center).padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    Icon(Icons.Outlined.LocationOff, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(
+                        text = if (hayFiltro) "Sin órdenes con ese filtro" else "Sin órdenes con coordenadas para hoy",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.Center,
+                    )
+                }
+            }
+
+            if (isLoading) {
+                CenteredLoadingOverlay(modifier = Modifier.fillMaxSize(), message = "Cargando mapa...")
             }
         }
+    }
+}
 
-        if (uiState.isCuadrillasMapaLoading) {
-            CenteredLoadingOverlay(modifier = Modifier.fillMaxSize(), message = "Cargando mapa...")
+@Composable
+private fun AlmacenOrderPopup(item: CoordinadorMapItem, onDismiss: () -> Unit, modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    Card(modifier = modifier.fillMaxWidth().padding(12.dp), elevation = CardDefaults.cardElevation(6.dp)) {
+        Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.Top) {
+                Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                    Text(item.cliente.ifBlank { item.ordenId }, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                    Text(item.cuadrillaNombre, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary)
+                    if (item.estado.isNotBlank()) Text(item.estado, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+                IconButton(onClick = onDismiss, modifier = Modifier.size(28.dp)) { Icon(Icons.Outlined.Close, null, modifier = Modifier.size(18.dp)) }
+            }
+            if (item.direccion.isNotBlank()) Text(item.direccion, style = MaterialTheme.typography.bodySmall, maxLines = 2, overflow = TextOverflow.Ellipsis, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Button(
+                onClick = {
+                    val uri = android.net.Uri.parse("https://www.google.com/maps/search/?api=1&query=${item.lat},${item.lng}")
+                    runCatching { context.startActivity(android.content.Intent(android.content.Intent.ACTION_VIEW, uri)) }
+                },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Icon(Icons.Outlined.Place, contentDescription = null, modifier = Modifier.size(16.dp))
+                Spacer(Modifier.width(6.dp))
+                Text("Abrir en Google Maps", style = MaterialTheme.typography.labelSmall)
+            }
         }
     }
 }

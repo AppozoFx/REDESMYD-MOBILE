@@ -5,7 +5,7 @@ import java.time.ZonedDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-enum class CoordinadorTab { INICIO, CUADRILLAS, LIQUIDACION, ALMACEN, GESTION }
+enum class CoordinadorTab { INICIO, CUADRILLAS, ALMACEN, GESTION }
 enum class AlmacenSubTab { STOCK, AUDITORIA, PREDESPACHO }
 enum class GestionSubTab { VENTAS, PLANTILLAS }
 enum class CuadrillasViewMode { LISTA, MAPA }
